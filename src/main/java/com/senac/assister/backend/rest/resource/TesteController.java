@@ -1,8 +1,6 @@
-package com.senac.assister.backend.resource;
+package com.senac.assister.backend.rest.resource;
 
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @ResponseBody
@@ -11,7 +9,6 @@ public class TesteController {
 
     @GetMapping("/short")
     public String getShortUrl(@RequestBody String teste) {
-
-        return null;
+        return teste;
     }
 }
