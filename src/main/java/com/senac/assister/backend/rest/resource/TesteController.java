@@ -9,6 +9,6 @@ public class TesteController {
 
     @GetMapping("/short")
     public String getShortUrl(@RequestBody String teste) {
-        return teste;
+        return "asd";
     }
 }
