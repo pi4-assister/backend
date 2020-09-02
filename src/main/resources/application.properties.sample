@@ -1,0 +1,8 @@
+spring.datasource.url=<url>
+spring.datasource.username=<db_name>
+spring.datasource.password=<db_pass>
+spring.flyway.baselineOnMigrate=true
+spring.jackson.default-property-inclusion=non_null
+
+# Only needed on development environment!
+spring.jpa.show-sql=true
