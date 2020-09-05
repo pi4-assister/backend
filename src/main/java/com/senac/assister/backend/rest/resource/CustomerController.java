@@ -47,12 +47,14 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping()
-    public ResponseEntity<CustomerResponseDto> editCustomer(@Valid @RequestBody CustomerRequestDto createCustomerRequest) {
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerResponseDto> editCustomer(@Valid @RequestBody CustomerRequestDto updateRequest, @PathVariable UUID id) {
 
-        createCustomerRequest.build();
+        updateRequest.build();
 
-        Customer customer = customerService.update(convertToEntity(createCustomerRequest));
+        updateRequest.setId(id);
+
+        Customer customer = customerService.update(convertToEntity(updateRequest));
 
         CustomerResponseDto response = convertToDto(customer);
         return new ResponseEntity<>(response, HttpStatus.OK);

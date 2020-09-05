@@ -7,8 +7,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.UUID;
 
 public class CustomerRequestDto {
+
+    private UUID id;
+
     @NotNull(message = "photoUrl field must be sent.")
     @Size(min = 1, max = 255, message = "photoUrl must be between 1 and 255 characters")
     private String photoUrl;
@@ -89,6 +93,14 @@ public class CustomerRequestDto {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getPhotoUrl() {

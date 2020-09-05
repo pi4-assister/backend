@@ -36,6 +36,9 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer update(Customer customer) {
+        if (findById(customer.getId()) == null) {
+            throw new CustomerNotFoundException(customer.getId());
+        }
         return repository.save(customer);
     }
 
