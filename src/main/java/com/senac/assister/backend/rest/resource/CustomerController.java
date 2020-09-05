@@ -1,9 +1,9 @@
 package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.Customer;
-import com.senac.assister.backend.domain.service.CustomerServiceImpl;
-import com.senac.assister.backend.rest.dto.Customer.CustomerRequestDto;
-import com.senac.assister.backend.rest.dto.Customer.CustomerResponseDto;
+import com.senac.assister.backend.domain.service.CustomerService;
+import com.senac.assister.backend.rest.dto.customer.CustomerRequestDto;
+import com.senac.assister.backend.rest.dto.customer.CustomerResponseDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,18 @@ import java.util.stream.Collectors;
 
 @RestController
 @ResponseBody
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/customer")
 public class CustomerController {
 
-    private final CustomerServiceImpl customerService;
+    private final CustomerService customerService;
     private final ModelMapper modelMapper;
 
-    public CustomerController(CustomerServiceImpl customerService, ModelMapper modelMapper) {
+    public CustomerController(CustomerService customerService, ModelMapper modelMapper) {
         this.customerService = customerService;
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/customer")
+    @GetMapping()
     public ResponseEntity<List<CustomerResponseDto>> getAllCustomers() {
         List<CustomerResponseDto> response = customerService.findAll()
                 .stream()
@@ -36,7 +36,7 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/customer")
+    @PostMapping()
     public ResponseEntity<CustomerResponseDto> createEntireCustomer(@Valid @RequestBody CustomerRequestDto createCustomerRequest) {
 
         createCustomerRequest.build();
@@ -47,7 +47,7 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/customer")
+    @PutMapping()
     public ResponseEntity<CustomerResponseDto> editCustomer(@Valid @RequestBody CustomerRequestDto createCustomerRequest) {
 
         createCustomerRequest.build();
@@ -58,14 +58,14 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/customer/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CustomerResponseDto> deleteCustomerById(@PathVariable UUID id) {
         CustomerResponseDto response = convertToDto(customerService.delete(id));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/customer/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CustomerResponseDto> getCustomerById(@PathVariable UUID id) {
         CustomerResponseDto response = convertToDto(customerService.findById(id));
 

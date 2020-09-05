@@ -3,13 +3,12 @@ package com.senac.assister.backend.domain.entity;
 import com.senac.assister.backend.domain.enumeration.customer.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.customer.CustomerType;
 import org.hibernate.annotations.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -73,7 +72,7 @@ public class Customer {
     private String zipCode;
 
     @Column(name = "active")
-    private boolean active;
+    private boolean active = true;
 
     @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")
@@ -86,7 +85,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
+    public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, List<CreditCard> creditCards, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.photoUrl = photoUrl;
         this.fullName = fullName;
@@ -108,7 +107,6 @@ public class Customer {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
 
     public UUID getId() {
         return id;

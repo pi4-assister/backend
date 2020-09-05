@@ -1,26 +1,38 @@
-package com.senac.assister.backend.rest.dto.Customer;
+package com.senac.assister.backend.rest.dto.customer;
 
 import com.senac.assister.backend.domain.enumeration.customer.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.customer.CustomerType;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 
-public class CustomerResponseDto {
-
-    private String id;
+public class CustomerRequestDto {
+    @NotNull(message = "photoUrl field must be sent.")
+    @Size(min = 1, max = 255, message = "photoUrl must be between 1 and 255 characters")
     private String photoUrl;
 
+    @NotNull(message = "fullName field must be sent.")
+    @Size(min = 1, max = 255, message = "fullName must be between 1 and 255 characters")
     private String fullName;
 
+    @NotNull
+    @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters")
     private String personIdentifier;
 
-    private Boolean isLegalPerson;
+    @NotNull(message = "isLegalPerson field must be sent.")
+    private boolean isLegalPerson;
 
+    @Size(min = 1, max = 500, message = "bio must be between 1 and 500 characters")
     private String bio;
 
+    @NotNull(message = "phoneNumber field must be sent.")
+    @Size(min = 1, max = 45, message = "phoneNumber must be between 1 and 45 characters")
     private String phoneNumber;
 
-    private Boolean isClient;
+    @NotNull(message = "isClient field must be sent.")
+    private boolean isClient;
 
     private CustomerType customerType;
 
@@ -28,29 +40,38 @@ public class CustomerResponseDto {
 
     private String landlineNumber;
 
+    @NotNull(message = "email field must be sent.")
+    @Email(message = "email should be a valid e-mail.")
+    @Size(min = 1, max = 255, message = "email must be between 1 and 255 characters")
     private String email;
 
+    @NotNull(message = "password field must be sent.")
+    @Size(min = 1, max = 255, message = "password must be between 1 and 255 characters")
     private String password;
 
+    @NotNull(message = "birthdate field must be sent.")
     private Instant birthdate;
 
+    @NotNull(message = "address field must be sent.")
+    @Size(min = 1, max = 255, message = "address must be between 1 and 255 characters")
     private String address;
 
+    @NotNull(message = "city field must be sent.")
+    @Size(min = 1, max = 255, message = "city must be between 1 and 255 characters")
     private String city;
 
+    @NotNull(message = "state field must be sent.")
+    @Size(min = 1, max = 255, message = "state must be between 1 and 255 characters")
     private String state;
 
+    @NotNull(message = "zipCode field must be sent.")
+    @Size(min = 1, max = 45, message = "zipCode must be between 1 and 255 characters")
     private String zipCode;
 
-    private Instant createdAt;
-
-    private Instant updatedAt;
-
-    public CustomerResponseDto() {
+    public CustomerRequestDto() {
     }
 
-    public CustomerResponseDto(String id, String photoUrl, String fullName, String personIdentifier, Boolean isLegalPerson, String bio, String phoneNumber, Boolean isClient, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
-        this.id = id;
+    public CustomerRequestDto(String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, boolean isClient, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode) {
         this.photoUrl = photoUrl;
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
@@ -68,12 +89,6 @@ public class CustomerResponseDto {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getPhotoUrl() {
@@ -88,7 +103,7 @@ public class CustomerResponseDto {
         return personIdentifier;
     }
 
-    public Boolean getLegalPerson() {
+    public boolean getLegalPerson() {
         return isLegalPerson;
     }
 
@@ -100,7 +115,7 @@ public class CustomerResponseDto {
         return phoneNumber;
     }
 
-    public Boolean getClient() {
+    public boolean getClient() {
         return isClient;
     }
 
@@ -144,18 +159,6 @@ public class CustomerResponseDto {
         return zipCode;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
@@ -168,7 +171,11 @@ public class CustomerResponseDto {
         this.personIdentifier = personIdentifier;
     }
 
-    public void setLegalPerson(Boolean legalPerson) {
+    public boolean isLegalPerson() {
+        return isLegalPerson;
+    }
+
+    public void setLegalPerson(boolean legalPerson) {
         isLegalPerson = legalPerson;
     }
 
@@ -180,7 +187,11 @@ public class CustomerResponseDto {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setClient(Boolean client) {
+    public boolean isClient() {
+        return isClient;
+    }
+
+    public void setClient(boolean client) {
         isClient = client;
     }
 
@@ -224,11 +235,13 @@ public class CustomerResponseDto {
         this.zipCode = zipCode;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
+    public void build() {
+        if (this.isClient) {
+            this.customerType = CustomerType.CLIENT;
+        } else {
+            this.customerType = CustomerType.PARTNER;
+        }
 
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
+        this.status = CustomerStatus.HIRED;
     }
 }

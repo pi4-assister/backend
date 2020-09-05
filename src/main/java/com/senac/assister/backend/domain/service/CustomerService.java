@@ -1,19 +1,51 @@
 package com.senac.assister.backend.domain.service;
 
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
+import com.senac.assister.backend.domain.repository.CustomerRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface CustomerService {
+@Service
+public class CustomerService implements CrudService<Customer> {
 
-    Customer save(Customer customer);
+    private final CustomerRepository repository;
 
-    Customer delete(UUID id);
+    public CustomerService(CustomerRepository repository) {
+        this.repository = repository;
+    }
 
-    Customer update(Customer customer);
+    @Override
+    public Customer save(Customer customer) {
+        return repository.save(customer);
+    }
 
-    Customer findById(UUID id);
+    @Override
+    public Customer delete(UUID id) {
+        Customer customer = findById(id);
 
-    List<Customer> findAll();
+        if (customer == null) {
+            throw new CustomerNotFoundException(id);
+        }
+
+        repository.delete(customer);
+        return customer;
+    }
+
+    @Override
+    public Customer update(Customer customer) {
+        return repository.save(customer);
+    }
+
+    @Override
+    public Customer findById(UUID id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return repository.findAll();
+    }
 }
