@@ -1,17 +1,21 @@
 package com.senac.assister.backend.domain.entity;
 
-import com.senac.assister.backend.domain.enumeration.CustomerStatus;
-import com.senac.assister.backend.domain.enumeration.CustomerType;
-import org.hibernate.annotations.GenericGenerator;
+import com.senac.assister.backend.domain.enumeration.customer.CustomerStatus;
+import com.senac.assister.backend.domain.enumeration.customer.CustomerType;
+import org.hibernate.annotations.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "customer")
-public class User {
+public class Customer {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -28,7 +32,7 @@ public class User {
     private String personIdentifier;
 
     @Column(name = "is_legal_person")
-    private Boolean isLegalPerson;
+    private boolean isLegalPerson;
 
     @Column(name = "bio")
     private String bio;
@@ -69,18 +73,20 @@ public class User {
     private String zipCode;
 
     @Column(name = "active")
-    private Boolean active;
+    private boolean active;
 
+    @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")
     private Instant createdAt;
 
+    @Generated(GenerationTime.ALWAYS)
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public User() {
+    public Customer() {
     }
 
-    public User(UUID id, String photoUrl, String fullName, String personIdentifier, Boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, Boolean active, Instant createdAt, Instant updatedAt) {
+    public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.photoUrl = photoUrl;
         this.fullName = fullName;
@@ -104,7 +110,6 @@ public class User {
     }
 
 
-
     public UUID getId() {
         return id;
     }
@@ -121,7 +126,7 @@ public class User {
         return personIdentifier;
     }
 
-    public Boolean getLegalPerson() {
+    public boolean getLegalPerson() {
         return isLegalPerson;
     }
 
@@ -173,7 +178,7 @@ public class User {
         return zipCode;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return active;
     }
 
@@ -185,13 +190,101 @@ public class User {
         return updatedAt;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPersonIdentifier(String personIdentifier) {
+        this.personIdentifier = personIdentifier;
+    }
+
+    public boolean isLegalPerson() {
+        return isLegalPerson;
+    }
+
+    public void setLegalPerson(boolean legalPerson) {
+        isLegalPerson = legalPerson;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setCustomerType(CustomerType customerType) {
+        this.customerType = customerType;
+    }
+
+    public void setStatus(CustomerStatus status) {
+        this.status = status;
+    }
+
+    public void setLandlineNumber(String landlineNumber) {
+        this.landlineNumber = landlineNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBirthdate(Instant birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return email.equals(user.email) &&
-                password.equals(user.password);
+        Customer customer = (Customer) o;
+        return email.equals(customer.email) &&
+                password.equals(customer.password);
     }
 
     @Override
