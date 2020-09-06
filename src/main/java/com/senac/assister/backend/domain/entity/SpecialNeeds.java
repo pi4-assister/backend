@@ -1,6 +1,5 @@
 package com.senac.assister.backend.domain.entity;
 
-import com.senac.assister.backend.domain.enumeration.ChargeStatus;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,8 +9,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "charge")
-public class Charge {
+@Table(name = "special_needs")
+public class SpecialNeeds {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -21,20 +20,13 @@ public class Charge {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "credit_card", nullable = false)
-    private CreditCard creditCard;
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "special_need_types")
+    private SpecialNeedType specialNeedType;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "service", nullable = false)
-    private Service service;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private ChargeStatus status;
-
-    @Column(name = "amount")
-    private double amount;
+    @Column(name = "active")
+    private boolean active;
 
     @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")
@@ -44,16 +36,14 @@ public class Charge {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public Charge() {
+    public SpecialNeeds() {
     }
 
-    public Charge(UUID id, Customer customer, CreditCard creditCard, Service service, ChargeStatus status, double amount, Instant createdAt, Instant updatedAt) {
+    public SpecialNeeds(UUID id, Customer customer, SpecialNeedType specialNeedType, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.customer = customer;
-        this.creditCard = creditCard;
-        this.service = service;
-        this.status = status;
-        this.amount = amount;
+        this.specialNeedType = specialNeedType;
+        this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -74,32 +64,20 @@ public class Charge {
         this.customer = customer;
     }
 
-    public CreditCard getCreditCard() {
-        return creditCard;
+    public SpecialNeedType getSpecialNeedType() {
+        return specialNeedType;
     }
 
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
+    public void setSpecialNeedType(SpecialNeedType specialNeedType) {
+        this.specialNeedType = specialNeedType;
     }
 
-    public Service getService() {
-        return service;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public Object getStatus() {
-        return status;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Instant getCreatedAt() {
@@ -116,9 +94,5 @@ public class Charge {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public void setStatus(ChargeStatus status) {
-        this.status = status;
     }
 }
