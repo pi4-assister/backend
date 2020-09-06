@@ -1,8 +1,8 @@
 package com.senac.assister.backend.domain.service;
 
 import com.senac.assister.backend.domain.entity.Customer;
-import com.senac.assister.backend.domain.enumeration.customer.CustomerStatus;
-import com.senac.assister.backend.domain.enumeration.customer.CustomerType;
+import com.senac.assister.backend.domain.enumeration.CustomerStatus;
+import com.senac.assister.backend.domain.enumeration.CustomerType;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
@@ -16,12 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class CustomerServiceTest {
-
-    private CustomerRepository customerRepository = mock(CustomerRepository.class);
-    private CustomerService customerService = new CustomerService(customerRepository);
+    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
+    private final CustomerService customerService = new CustomerService(customerRepository);
 
     @Test
-    void save() {
+    void Create_SuccessCustomer_Success() {
         Customer customer = createCustomer();
         customerService.save(customer);
 
@@ -29,7 +28,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void updateSuccess() {
+    void Update_Customer_Success() {
         Customer customer = createCustomer();
 
         when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
@@ -39,13 +38,38 @@ class CustomerServiceTest {
     }
 
     @Test
-    void updateWhenNotExists() {
+    void Update_CustomerNotFound_Fail() {
         Customer customer = createCustomer();
 
         when(customerRepository.findById(customer.getId())).thenReturn(Optional.empty());
 
         CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
             customerService.update(customer);
+        });
+
+        Assertions.assertEquals("Customer " + customer.getId().toString() + " not found.", exception.getMessage());
+
+        verify(customerRepository, never()).save(customer);
+    }
+
+    @Test
+    void Delete_Customer_Success() {
+        Customer customer = createCustomer();
+
+        when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+        customerService.delete(customer.getId());
+
+        verify(customerRepository, times(1)).save(customer);
+    }
+
+    @Test
+    void Delete_CustomerNotFound_Fail() {
+        Customer customer = createCustomer();
+
+        when(customerRepository.findById(customer.getId())).thenReturn(Optional.empty());
+
+        CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
+            customerService.delete(customer.getId());
         });
 
         Assertions.assertEquals("Customer " + customer.getId().toString() + " not found.", exception.getMessage());

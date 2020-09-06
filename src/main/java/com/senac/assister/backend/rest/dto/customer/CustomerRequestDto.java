@@ -1,7 +1,7 @@
 package com.senac.assister.backend.rest.dto.customer;
 
-import com.senac.assister.backend.domain.enumeration.customer.CustomerStatus;
-import com.senac.assister.backend.domain.enumeration.customer.CustomerType;
+import com.senac.assister.backend.domain.enumeration.CustomerStatus;
+import com.senac.assister.backend.domain.enumeration.CustomerType;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
