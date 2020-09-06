@@ -19,6 +19,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer save(Customer customer) {
+        // bussiness rule validation
         return repository.save(customer);
     }
 
@@ -30,7 +31,10 @@ public class CustomerService implements CrudService<Customer> {
             throw new CustomerNotFoundException(id);
         }
 
-        repository.delete(customer);
+        // remove from all relations -> credit card, etc.
+        customer.setActive(false);
+
+        repository.save(customer);
         return customer;
     }
 

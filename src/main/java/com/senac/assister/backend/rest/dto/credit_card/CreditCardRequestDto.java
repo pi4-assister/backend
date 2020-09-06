@@ -10,9 +10,9 @@ public class CreditCardRequestDto {
     @NotNull(message = "customerId field must be sent.")
     private UUID customerId;
 
-    @NotNull(message = "lastFourDigits field must be sent.")
-    @Size(min = 1, max = 4, message = "lastFourDigits must be between 1 and 4 characters")
-    private String lastFourDigits;
+    @NotNull(message = "creditCardNumber field must be sent.")
+    @Size(min = 16, max = 20, message = "creditCardNumber must be between 1 and 20 characters")
+    private String creditCardNumber;
 
     @NotNull(message = "creditCardName field must be sent.")
     @Size(min = 1, max = 255, message = "creditCardName must be between 1 and 255 characters")
@@ -31,9 +31,9 @@ public class CreditCardRequestDto {
     public CreditCardRequestDto() {
     }
 
-    public CreditCardRequestDto(@NotNull(message = "customerId field must be sent.") @Size(min = 1, max = 45, message = "UUID must be an correct UUID.") UUID customerId, @NotNull(message = "lastFourDigits field must be sent.") @Size(min = 1, max = 255, message = "lastFourDigits must be between 1 and 255 characters") String lastFourDigits, @NotNull(message = "creditCardName field must be sent.") @Size(min = 1, max = 255, message = "creditCardName must be between 1 and 255 characters") String creditCardName, @NotNull(message = "expirationDate field must be sent.") @Size(min = 1, max = 255, message = "expirationDate must be between 1 and 255 characters") String expirationDate, @NotNull(message = "credit_card_brand field must be sent.") @Size(min = 1, max = 255, message = "credit_card_brand must be between 1 and 255 characters") String creditCardBrand) {
+    public CreditCardRequestDto(@NotNull(message = "customerId field must be sent.") @Size(min = 1, max = 45, message = "UUID must be an correct UUID.") UUID customerId, @NotNull(message = "lastFourDigits field must be sent.") @Size(min = 1, max = 255, message = "lastFourDigits must be between 1 and 255 characters") String creditCardNumber, @NotNull(message = "creditCardName field must be sent.") @Size(min = 1, max = 255, message = "creditCardName must be between 1 and 255 characters") String creditCardName, @NotNull(message = "expirationDate field must be sent.") @Size(min = 1, max = 255, message = "expirationDate must be between 1 and 255 characters") String expirationDate, @NotNull(message = "credit_card_brand field must be sent.") @Size(min = 1, max = 255, message = "credit_card_brand must be between 1 and 255 characters") String creditCardBrand) {
         this.customerId = customerId;
-        this.lastFourDigits = lastFourDigits;
+        this.creditCardNumber = creditCardNumber;
         this.creditCardName = creditCardName;
         this.expirationDate = expirationDate;
         this.creditCardBrand = creditCardBrand;
@@ -47,12 +47,12 @@ public class CreditCardRequestDto {
         this.customerId = customerId;
     }
 
-    public String getLastFourDigits() {
-        return lastFourDigits;
+    public String getCreditCardNumber() {
+        return creditCardNumber;
     }
 
-    public void setLastFourDigits(String lastFourDigits) {
-        this.lastFourDigits = lastFourDigits;
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
     }
 
     public String getCreditCardName() {

@@ -1,14 +1,13 @@
 package com.senac.assister.backend.domain.entity;
 
-import com.senac.assister.backend.domain.enumeration.customer.CustomerStatus;
-import com.senac.assister.backend.domain.enumeration.customer.CustomerType;
+import com.senac.assister.backend.domain.enumeration.CustomerStatus;
+import com.senac.assister.backend.domain.enumeration.CustomerType;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 

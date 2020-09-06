@@ -18,12 +18,14 @@ public class CreditCard {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="customer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @Column(name = "token")
     private String token;
+
+    private String cardNumber;
 
     @Column(name = "last_four_digits")
     private String lastFourDigits;
@@ -99,6 +101,10 @@ public class CreditCard {
 
     public String getCreditCardName() {
         return creditCardName;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
     }
 
     public void setCreditCardName(String creditCardName) {
