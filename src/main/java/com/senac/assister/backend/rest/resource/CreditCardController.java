@@ -25,7 +25,7 @@ public class CreditCardController {
         this.creditCardService = creditCardService;
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<CreditCardResponseDto> createCard(@Valid @RequestBody CreditCardRequestDto createCreditCardRequest) {
         createCreditCardRequest.build();
 
