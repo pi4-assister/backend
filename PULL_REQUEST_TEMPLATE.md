@@ -7,6 +7,7 @@ List any dependencies that are required for this change. -->
 ## Checklist
 - [ ] Code compiles correctly
 - [ ] Extended the README/documentation, if necessary
+- [ ] Unit tests
 
 
 ## Pull request type
