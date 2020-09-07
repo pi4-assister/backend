@@ -17,16 +17,12 @@ public class Charge {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
-
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "credit_card", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "credit_card_id")
     private CreditCard creditCard;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "service", nullable = false)
+    @OneToOne()
+    @JoinColumn(name = "service_id")
     private Service service;
 
     @Enumerated(EnumType.STRING)
@@ -47,9 +43,8 @@ public class Charge {
     public Charge() {
     }
 
-    public Charge(UUID id, Customer customer, CreditCard creditCard, Service service, ChargeStatus status, double amount, Instant createdAt, Instant updatedAt) {
+    public Charge(UUID id, CreditCard creditCard, Service service, ChargeStatus status, double amount, Instant createdAt, Instant updatedAt) {
         this.id = id;
-        this.customer = customer;
         this.creditCard = creditCard;
         this.service = service;
         this.status = status;
@@ -64,14 +59,6 @@ public class Charge {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public CreditCard getCreditCard() {
@@ -90,8 +77,12 @@ public class Charge {
         this.service = service;
     }
 
-    public Object getStatus() {
+    public ChargeStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(ChargeStatus status) {
+        this.status = status;
     }
 
     public double getAmount() {
@@ -116,9 +107,5 @@ public class Charge {
 
     public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public void setStatus(ChargeStatus status) {
-        this.status = status;
     }
 }

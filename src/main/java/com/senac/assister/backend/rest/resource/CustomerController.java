@@ -1,7 +1,9 @@
 package com.senac.assister.backend.rest.resource;
 
+import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.service.CustomerService;
+import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponseDto;
 import com.senac.assister.backend.rest.dto.customer.CustomerRequestDto;
 import com.senac.assister.backend.rest.dto.customer.CustomerResponseDto;
 import org.modelmapper.ModelMapper;
@@ -74,11 +76,25 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.FOUND);
     }
 
+    @GetMapping("/{id}/creditCards")
+    public ResponseEntity<List<CreditCardResponseDto>> getAllCreditCardsByCustomer(@PathVariable UUID id) {
+        List<CreditCardResponseDto> response = customerService.getAllCreditCardsByCustomer(id)
+                .stream()
+                .map(this::convertCreditCardToDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
     private CustomerResponseDto convertToDto(Customer customer) {
         return modelMapper.map(customer, CustomerResponseDto.class);
     }
 
     private Customer convertToEntity(CustomerRequestDto customerDto) {
         return modelMapper.map(customerDto, Customer.class);
+    }
+
+    private CreditCardResponseDto convertCreditCardToDto(CreditCard creditCard) {
+        return modelMapper.map(creditCard, CreditCardResponseDto.class);
     }
 }

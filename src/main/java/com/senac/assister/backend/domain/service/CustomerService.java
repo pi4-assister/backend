@@ -1,5 +1,6 @@
 package com.senac.assister.backend.domain.service;
 
+import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
@@ -54,5 +55,11 @@ public class CustomerService implements CrudService<Customer> {
     @Override
     public List<Customer> findAll() {
         return repository.findAll();
+    }
+
+    public List<CreditCard> getAllCreditCardsByCustomer(UUID id) {
+        Customer customer = findById(id);
+
+        return customer.getCreditCards();
     }
 }

@@ -16,13 +16,12 @@ public class SpecialNeeds {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "special_need_types")
+    @OneToOne()
+    @JoinColumn(name = "special_need_type_id")
     private SpecialNeedType specialNeedType;
 
     @Column(name = "active")

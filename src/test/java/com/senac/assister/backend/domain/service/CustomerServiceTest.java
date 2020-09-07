@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,6 +95,7 @@ class CustomerServiceTest {
                 "12345678",
                 Instant.now(),
                 "asdkasdkoasd 1100",
+                new ArrayList<>(),
                 "Sao Paulo",
                 "Sao Paulo",
                 "04672234",

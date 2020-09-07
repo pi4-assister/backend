@@ -17,16 +17,16 @@ public class Service {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "customer_client_id")
     private Customer clientCustomer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "customer_partner_id")
     private Customer partnerCustomer;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "service_type_id", nullable = false)
+    @OneToOne()
+    @JoinColumn(name = "service_type_id")
     private ServiceType serviceType;
 
     @Column(name = "service_date")
@@ -35,8 +35,11 @@ public class Service {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rate_id", nullable = false)
+    @OneToOne(mappedBy = "service")
+    private Charge charge;
+
+    @OneToOne
+    @JoinColumn(name = "rate_id")
     private Rate rate;
 
     @Enumerated(EnumType.STRING)
@@ -54,13 +57,14 @@ public class Service {
     public Service() {
     }
 
-    public Service(UUID id, Customer clientCustomer, Customer partnerCustomer, ServiceType serviceType, Instant serviceDate, String description, Rate rate, ServiceStatus serviceStatus, Instant createdAt, Instant updatedAt) {
+    public Service(UUID id, Customer clientCustomer, Customer partnerCustomer, ServiceType serviceType, Instant serviceDate, String description, Charge charge, Rate rate, ServiceStatus serviceStatus, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.clientCustomer = clientCustomer;
         this.partnerCustomer = partnerCustomer;
         this.serviceType = serviceType;
         this.serviceDate = serviceDate;
         this.description = description;
+        this.charge = charge;
         this.rate = rate;
         this.serviceStatus = serviceStatus;
         this.createdAt = createdAt;
@@ -129,6 +133,10 @@ public class Service {
 
     public void setServiceStatus(ServiceStatus serviceStatus) {
         this.serviceStatus = serviceStatus;
+    }
+
+    public void setCharge(Charge charge) {
+        this.charge = charge;
     }
 
     public Instant getCreatedAt() {

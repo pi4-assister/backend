@@ -1,5 +1,6 @@
 package com.senac.assister.payment.service;
 
+import com.senac.assister.backend.domain.entity.Charge;
 import com.senac.assister.backend.domain.entity.CreditCard;
 
 public interface PaymentService {
@@ -12,5 +13,9 @@ public interface PaymentService {
      */
     public String createCreditCard(CreditCard creditCard);
 
-    public void authorize();
+    /**
+     * Authorize payment
+     * @param charge
+     */
+    public void authorize(Charge charge);
 }

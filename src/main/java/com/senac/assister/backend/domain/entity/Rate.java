@@ -17,9 +17,7 @@ public class Rate {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "rate")
+    @OneToOne(mappedBy = "rate")
     private Service service;
 
     @Column(name = "score")
