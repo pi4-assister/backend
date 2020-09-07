@@ -1,19 +1,11 @@
 package com.senac.assister.backend.rest.dto.credit_card;
 
-import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CreditCardBrand;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.time.Instant;
 import java.util.UUID;
 
 public class CreditCardResponseDto {
     private UUID id;
-
-    private Customer customer;
 
     private String token;
 
@@ -25,26 +17,16 @@ public class CreditCardResponseDto {
 
     private CreditCardBrand brand;
 
-    private boolean active;
-
-    private Instant createdAt;
-
-    private Instant updatedAt;
-
     public CreditCardResponseDto() {
     }
 
-    public CreditCardResponseDto(UUID id, Customer customer, String token, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand, boolean active, Instant createdAt, Instant updatedAt) {
+    public CreditCardResponseDto(UUID id, String token, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand) {
         this.id = id;
-        this.customer = customer;
         this.token = token;
         this.lastFourDigits = lastFourDigits;
         this.creditCardName = creditCardName;
         this.expirationDate = expirationDate;
         this.brand = brand;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public UUID getId() {
@@ -53,14 +35,6 @@ public class CreditCardResponseDto {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
     }
 
     public String getToken() {
@@ -101,29 +75,5 @@ public class CreditCardResponseDto {
 
     public void setBrand(CreditCardBrand brand) {
         this.brand = brand;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

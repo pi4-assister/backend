@@ -1,5 +1,6 @@
 package com.senac.assister.backend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
 import org.hibernate.annotations.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -61,6 +63,10 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    private List<CreditCard> creditCards;
+
     @Column(name = "city")
     private String city;
 
@@ -84,7 +90,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
+    public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, List<CreditCard> creditCards, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.photoUrl = photoUrl;
         this.fullName = fullName;
@@ -99,6 +105,7 @@ public class Customer {
         this.password = password;
         this.birthdate = birthdate;
         this.address = address;
+        this.creditCards = creditCards;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
@@ -229,6 +236,10 @@ public class Customer {
 
     public void setLandlineNumber(String landlineNumber) {
         this.landlineNumber = landlineNumber;
+    }
+
+    public List<CreditCard> getCreditCards() {
+        return creditCards;
     }
 
     public void setEmail(String email) {

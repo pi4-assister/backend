@@ -1,12 +1,16 @@
 package com.senac.assister.backend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.senac.assister.backend.domain.enumeration.CreditCardBrand;
+import com.senac.assister.payment.service.PaymentServiceImpl;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -18,14 +22,23 @@ public class CreditCard {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @Column(name = "token")
     private String token;
 
-    private String cardNumber;
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
+    }
+
+    @JsonInclude()
+    @Transient
+    private String creditCardNumber;
+
+    @OneToMany(mappedBy = "creditCard")
+    private List<Charge> charges = new ArrayList<>();
 
     @Column(name = "last_four_digits")
     private String lastFourDigits;
@@ -54,10 +67,12 @@ public class CreditCard {
     public CreditCard() {
     }
 
-    public CreditCard(UUID id, Customer customer, String token, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand, boolean active, Instant createdAt, Instant updatedAt) {
+    public CreditCard(UUID id, Customer customer, String token, String creditCardNumber, List<Charge> charges, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.customer = customer;
         this.token = token;
+        this.creditCardNumber = creditCardNumber;
+        this.charges = charges;
         this.lastFourDigits = lastFourDigits;
         this.creditCardName = creditCardName;
         this.expirationDate = expirationDate;
@@ -103,8 +118,8 @@ public class CreditCard {
         return creditCardName;
     }
 
-    public String getCardNumber() {
-        return cardNumber;
+    public String getCreditCardNumber() {
+        return creditCardNumber;
     }
 
     public void setCreditCardName(String creditCardName) {
@@ -143,6 +158,10 @@ public class CreditCard {
         this.createdAt = createdAt;
     }
 
+    public List<Charge> getCharges() {
+        return charges;
+    }
+
     public Instant getUpdatedAt() {
         return updatedAt;
     }
@@ -163,5 +182,21 @@ public class CreditCard {
     @Override
     public int hashCode() {
         return Objects.hash(token, lastFourDigits);
+    }
+
+    public void buildCreditCard() {
+        PaymentServiceImpl paymentService = new PaymentServiceImpl();
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+
+        String token = paymentService.createCreditCard(this);
+
+        this.token = token;
+        this.lastFourDigits = this.creditCardNumber.substring(this.creditCardNumber.length() - 4);
+        this.creditCardNumber = null;
+    }
+
+    public void deactivate() {
+        this.active = false;
     }
 }

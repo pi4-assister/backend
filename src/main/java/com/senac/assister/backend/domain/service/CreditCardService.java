@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CreditCardService implements CrudService<CreditCard> {
@@ -26,6 +27,10 @@ public class CreditCardService implements CrudService<CreditCard> {
         if (customerService.findById(source.getId()) == null) {
             throw new CustomerNotFoundException(source.getId());
         }
+
+        deactivateOldCard(source.getId());
+
+        source.buildCreditCard();
 
         return repository.save(source);
     }
@@ -48,5 +53,11 @@ public class CreditCardService implements CrudService<CreditCard> {
     @Override
     public List<CreditCard> findAll() {
         return null;
+    }
+
+    private void deactivateOldCard(UUID id) {
+        CreditCard creditCard = repository.findTopByOrderByCreatedAtDesc();
+        creditCard.setActive(false);
+        repository.save(creditCard);
     }
 }
