@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface CreditCardRepository extends JpaRepository<CreditCard, UUID> {
+
+    CreditCard findTopByOrderByCreatedAtDesc();
 }

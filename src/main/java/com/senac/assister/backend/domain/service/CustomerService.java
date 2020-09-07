@@ -35,8 +35,7 @@ public class CustomerService implements CrudService<Customer> {
         // remove from all relations -> credit card, etc.
         customer.setActive(false);
 
-        repository.save(customer);
-        return customer;
+        return repository.save(customer);
     }
 
     @Override

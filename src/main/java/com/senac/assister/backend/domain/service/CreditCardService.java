@@ -28,7 +28,7 @@ public class CreditCardService implements CrudService<CreditCard> {
             throw new CustomerNotFoundException(source.getId());
         }
 
-        deactivateOldCards(source.getId());
+        deactivateOldCard(source.getId());
 
         source.buildCreditCard();
 
@@ -55,7 +55,9 @@ public class CreditCardService implements CrudService<CreditCard> {
         return null;
     }
 
-    private void deactivateOldCards(UUID id) {
-        customerService.getAllCreditCardsByCustomer(id).stream().map().collect(Collectors.toList());
+    private void deactivateOldCard(UUID id) {
+        CreditCard creditCard = repository.findTopByOrderByCreatedAtDesc();
+        creditCard.setActive(false);
+        repository.save(creditCard);
     }
 }

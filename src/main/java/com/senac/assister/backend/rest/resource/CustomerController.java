@@ -82,6 +82,7 @@ public class CustomerController {
                 .stream()
                 .map(this::convertCreditCardToDto)
                 .collect(Collectors.toList());
+        
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
