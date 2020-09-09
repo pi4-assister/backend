@@ -32,7 +32,5 @@ public class ValidExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("errors", errors);
 
         return new ResponseEntity<>(body, headers, status);
-
     }
-
 }
