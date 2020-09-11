@@ -3,6 +3,7 @@ package com.senac.assister.backend.rest.resource;
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.service.CustomerService;
+import com.senac.assister.backend.rest.Util.Util;
 import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponseDto;
 import com.senac.assister.backend.rest.dto.customer.CustomerRequestDto;
 import com.senac.assister.backend.rest.dto.customer.CustomerResponseDto;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -42,10 +44,9 @@ public class CustomerController {
     public ResponseEntity<CustomerResponseDto> createEntireCustomer(@Valid @RequestBody CustomerRequestDto createCustomerRequest) {
 
         createCustomerRequest.build();
-
         Customer customer = customerService.save(convertToEntity(createCustomerRequest));
-
-        CustomerResponseDto response = convertToDto(customer);
+       //Metodo generico para alteração do obj, testar e ver melhor lugar para colocar
+        CustomerResponseDto response = (CustomerResponseDto) Util.convertReflect(customer, CustomerResponseDto.class);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -88,8 +89,10 @@ public class CustomerController {
     }
 
     private CustomerResponseDto convertToDto(Customer customer) {
+        System.out.println("Convert");
         return modelMapper.map(customer, CustomerResponseDto.class);
     }
+
 
     private Customer convertToEntity(CustomerRequestDto customerDto) {
         return modelMapper.map(customerDto, Customer.class);
