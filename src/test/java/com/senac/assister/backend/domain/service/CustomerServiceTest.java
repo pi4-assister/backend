@@ -4,6 +4,7 @@ import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
+import com.senac.assister.backend.domain.repository.CreditCardRepository;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import static org.mockito.Mockito.*;
 
 class CustomerServiceTest {
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-    private final CustomerService customerService = new CustomerService(customerRepository);
+    private final CreditCardRepository creditCardRepository = mock(CreditCardRepository.class);
+    private final CustomerService customerService = new CustomerService(customerRepository, creditCardRepository);
 
     @Test
     void Create_SuccessCustomer_Success() {

@@ -1,10 +1,14 @@
 package com.senac.assister.backend.rest.dto.credit_card;
 
+import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.enumeration.CreditCardBrand;
+import org.modelmapper.ModelMapper;
 
 import java.util.UUID;
 
-public class CreditCardResponseDto {
+public class CreditCardResponse {
+    private static ModelMapper mapper = new ModelMapper();
+
     private UUID id;
 
     private String token;
@@ -17,10 +21,10 @@ public class CreditCardResponseDto {
 
     private CreditCardBrand brand;
 
-    public CreditCardResponseDto() {
+    public CreditCardResponse() {
     }
 
-    public CreditCardResponseDto(UUID id, String token, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand) {
+    public CreditCardResponse(UUID id, String token, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand) {
         this.id = id;
         this.token = token;
         this.lastFourDigits = lastFourDigits;
@@ -75,5 +79,9 @@ public class CreditCardResponseDto {
 
     public void setBrand(CreditCardBrand brand) {
         this.brand = brand;
+    }
+
+    public static CreditCardResponse convertToDto(CreditCard request) {
+        return mapper.map(request, CreditCardResponse.class);
     }
 }

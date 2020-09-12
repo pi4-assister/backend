@@ -291,12 +291,11 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return email.equals(customer.email) &&
-                password.equals(customer.password);
+        return email.equals(customer.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password);
+        return Objects.hash(email);
     }
 }

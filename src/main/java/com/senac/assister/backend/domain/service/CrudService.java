@@ -1,8 +1,7 @@
 package com.senac.assister.backend.domain.service;
 
-import com.senac.assister.backend.domain.entity.Customer;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CrudService<T> {
@@ -13,7 +12,8 @@ public interface CrudService<T> {
 
     T update(T source);
 
-    T findById(UUID id);
+    Optional<T> findById(UUID id);
 
     List<T> findAll();
+
 }
