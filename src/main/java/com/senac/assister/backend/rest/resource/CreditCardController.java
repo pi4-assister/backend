@@ -2,8 +2,8 @@ package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.service.CreditCardService;
-import com.senac.assister.backend.rest.dto.credit_card.CreditCardRequestDto;
-import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponseDto;
+import com.senac.assister.backend.rest.dto.credit_card.CreateCreditCardRequest;
+import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +26,22 @@ public class CreditCardController {
     }
 
     @PostMapping()
-    public ResponseEntity<CreditCardResponseDto> createCard(@Valid @RequestBody CreditCardRequestDto createCreditCardRequest) {
+    public ResponseEntity<CreditCardResponse> createCard(@Valid @RequestBody CreateCreditCardRequest createCreditCardRequest) {
         createCreditCardRequest.build();
 
         CreditCard creditCard = creditCardService.save(convertToEntity(createCreditCardRequest));
 
-        CreditCardResponseDto response = convertToDto(creditCard);
+        CreditCardResponse response = convertToDto(creditCard);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
 
-    private CreditCardResponseDto convertToDto(CreditCard creditCard) {
-        return modelMapper.map(creditCard, CreditCardResponseDto.class);
+    private CreditCardResponse convertToDto(CreditCard creditCard) {
+        return modelMapper.map(creditCard, CreditCardResponse.class);
     }
 
-    private CreditCard convertToEntity(CreditCardRequestDto creditCardDto) {
+    private CreditCard convertToEntity(CreateCreditCardRequest creditCardDto) {
         return modelMapper.map(creditCardDto, CreditCard.class);
     }
 }

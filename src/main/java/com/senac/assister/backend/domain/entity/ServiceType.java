@@ -22,8 +22,8 @@ public class ServiceType {
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "price")
-    private double price;
+    @Column(name = "base_price")
+    private double base_price;
 
     @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")
@@ -36,11 +36,11 @@ public class ServiceType {
     public ServiceType() {
     }
 
-    public ServiceType(UUID id, String name, boolean active, double price, Instant createdAt, Instant updatedAt) {
+    public ServiceType(UUID id, String name, boolean active, double base_price, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.name = name;
         this.active = active;
-        this.price = price;
+        this.base_price = base_price;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -69,12 +69,12 @@ public class ServiceType {
         this.active = active;
     }
 
-    public double getPrice() {
-        return price;
+    public double getBase_price() {
+        return base_price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setBase_price(double price) {
+        this.base_price = price;
     }
 
     public Instant getCreatedAt() {

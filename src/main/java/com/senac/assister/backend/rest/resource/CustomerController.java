@@ -1,11 +1,15 @@
 package com.senac.assister.backend.rest.resource;
 
-import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.service.CustomerService;
-import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponseDto;
-import com.senac.assister.backend.rest.dto.customer.CustomerRequestDto;
-import com.senac.assister.backend.rest.dto.customer.CustomerResponseDto;
+import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
+import com.senac.assister.backend.rest.dto.customer.CreateCustomerRequest;
+import com.senac.assister.backend.rest.dto.customer.CreateCustomerResponse;
+import com.senac.assister.backend.rest.dto.customer.CustomerResponse;
+import com.senac.assister.backend.rest.dto.customer.UpdateCustomerRequest;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,80 +26,74 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final ModelMapper modelMapper;
 
-    public CustomerController(CustomerService customerService, ModelMapper modelMapper) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.modelMapper = modelMapper;
     }
 
+    @ApiOperation("List all customers.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Returns list of customers")
+    })
     @GetMapping()
-    public ResponseEntity<List<CustomerResponseDto>> getAllCustomers() {
-        List<CustomerResponseDto> response = customerService.findAll()
+    public ResponseEntity<List<CustomerResponse>> index() {
+        List<CustomerResponse> response = customerService.findAll()
                 .stream()
-                .map(this::convertToDto)
+                .map(CustomerResponse::convertToDto)
                 .collect(Collectors.toList());
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @ApiOperation("Create customer from scratch.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Created customer successfully.")
+    })
     @PostMapping()
-    public ResponseEntity<CustomerResponseDto> createEntireCustomer(@Valid @RequestBody CustomerRequestDto createCustomerRequest) {
+    public ResponseEntity<CreateCustomerResponse> createCustomer(@Valid @RequestBody CreateCustomerRequest request) {
+        Customer customer = customerService.save(CreateCustomerRequest.convertToEntity(request));
 
-        createCustomerRequest.build();
+        CreateCustomerResponse response = CreateCustomerResponse.convertToDto(customer);
 
-        Customer customer = customerService.save(convertToEntity(createCustomerRequest));
-
-        CustomerResponseDto response = convertToDto(customer);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @ApiOperation("Edit customer.")
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerResponseDto> editCustomer(@Valid @RequestBody CustomerRequestDto updateRequest, @PathVariable UUID id) {
+    public ResponseEntity<CustomerResponse> editCustomer(@Valid @RequestBody UpdateCustomerRequest request, @PathVariable UUID id) {
+        request.setId(id);
 
-        updateRequest.build();
+        Customer customer = customerService.update(UpdateCustomerRequest.convertToEntity(request));
 
-        updateRequest.setId(id);
+        CustomerResponse response = CustomerResponse.convertToDto(customer);
 
-        Customer customer = customerService.update(convertToEntity(updateRequest));
-
-        CustomerResponseDto response = convertToDto(customer);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @ApiOperation("Delete customer.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<CustomerResponseDto> deleteCustomerById(@PathVariable UUID id) {
-        CustomerResponseDto response = convertToDto(customerService.delete(id));
+    public ResponseEntity<Void> deleteCustomer(@PathVariable UUID id) {
+        customerService.delete(id);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation("Find customer by id")
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponseDto> getCustomerById(@PathVariable UUID id) {
-        CustomerResponseDto response = convertToDto(customerService.findById(id));
+    public ResponseEntity<CustomerResponse> show(@PathVariable UUID id) {
+        CustomerResponse response = CustomerResponse.convertToDto(customerService.show(id));
 
         return new ResponseEntity<>(response, HttpStatus.FOUND);
     }
 
+    @ApiOperation("List all credit cards by customer id.")
     @GetMapping("/{id}/creditCards")
-    public ResponseEntity<List<CreditCardResponseDto>> getAllCreditCardsByCustomer(@PathVariable UUID id) {
-        List<CreditCardResponseDto> response = customerService.getAllCreditCardsByCustomer(id)
+    public ResponseEntity<List<CreditCardResponse>> getAllCreditCardsByCustomer(@PathVariable UUID id) {
+        List<CreditCardResponse> response = customerService.getAllCreditCardsByCustomer(id)
                 .stream()
-                .map(this::convertCreditCardToDto)
+                .map(CreditCardResponse::convertToDto)
                 .collect(Collectors.toList());
-        
+
         return new ResponseEntity<>(response, HttpStatus.OK);
-
-    }
-
-    private CustomerResponseDto convertToDto(Customer customer) {
-        return modelMapper.map(customer, CustomerResponseDto.class);
-    }
-
-    private Customer convertToEntity(CustomerRequestDto customerDto) {
-        return modelMapper.map(customerDto, Customer.class);
-    }
-
-    private CreditCardResponseDto convertCreditCardToDto(CreditCard creditCard) {
-        return modelMapper.map(creditCard, CreditCardResponseDto.class);
     }
 }

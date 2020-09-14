@@ -7,8 +7,8 @@ import com.senac.assister.backend.domain.repository.CreditCardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CreditCardService implements CrudService<CreditCard> {
@@ -46,7 +46,7 @@ public class CreditCardService implements CrudService<CreditCard> {
     }
 
     @Override
-    public CreditCard findById(UUID id) {
+    public Optional<CreditCard> findById(UUID id) {
         return null;
     }
 

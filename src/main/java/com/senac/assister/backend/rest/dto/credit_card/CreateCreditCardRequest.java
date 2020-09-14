@@ -1,12 +1,18 @@
 package com.senac.assister.backend.rest.dto.credit_card;
 
+import com.senac.assister.backend.domain.entity.CreditCard;
+import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CreditCardBrand;
+import com.senac.assister.backend.rest.dto.customer.UpdateCustomerRequest;
+import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
-public class CreditCardRequestDto {
+public class CreateCreditCardRequest {
+    private static ModelMapper mapper = new ModelMapper();
+
     @NotNull(message = "customerId field must be sent.")
     private UUID customerId;
 
@@ -28,10 +34,10 @@ public class CreditCardRequestDto {
 
     private CreditCardBrand brand;
 
-    public CreditCardRequestDto() {
+    public CreateCreditCardRequest() {
     }
 
-    public CreditCardRequestDto(@NotNull(message = "customerId field must be sent.") @Size(min = 1, max = 45, message = "UUID must be an correct UUID.") UUID customerId, @NotNull(message = "lastFourDigits field must be sent.") @Size(min = 1, max = 255, message = "lastFourDigits must be between 1 and 255 characters") String creditCardNumber, @NotNull(message = "creditCardName field must be sent.") @Size(min = 1, max = 255, message = "creditCardName must be between 1 and 255 characters") String creditCardName, @NotNull(message = "expirationDate field must be sent.") @Size(min = 1, max = 255, message = "expirationDate must be between 1 and 255 characters") String expirationDate, @NotNull(message = "credit_card_brand field must be sent.") @Size(min = 1, max = 255, message = "credit_card_brand must be between 1 and 255 characters") String creditCardBrand) {
+    public CreateCreditCardRequest(@NotNull(message = "customerId field must be sent.") @Size(min = 1, max = 45, message = "UUID must be an correct UUID.") UUID customerId, @NotNull(message = "lastFourDigits field must be sent.") @Size(min = 1, max = 255, message = "lastFourDigits must be between 1 and 255 characters") String creditCardNumber, @NotNull(message = "creditCardName field must be sent.") @Size(min = 1, max = 255, message = "creditCardName must be between 1 and 255 characters") String creditCardName, @NotNull(message = "expirationDate field must be sent.") @Size(min = 1, max = 255, message = "expirationDate must be between 1 and 255 characters") String expirationDate, @NotNull(message = "credit_card_brand field must be sent.") @Size(min = 1, max = 255, message = "credit_card_brand must be between 1 and 255 characters") String creditCardBrand) {
         this.customerId = customerId;
         this.creditCardNumber = creditCardNumber;
         this.creditCardName = creditCardName;
@@ -89,5 +95,9 @@ public class CreditCardRequestDto {
 
     public void build() {
         this.brand = CreditCardBrand.valueOf(this.creditCardBrand);
+    }
+
+    public static CreditCard convertToEntity(CreateCreditCardRequest request) {
+        return mapper.map(request, CreditCard.class);
     }
 }

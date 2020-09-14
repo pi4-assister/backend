@@ -29,11 +29,17 @@ public class Service {
     @JoinColumn(name = "service_type_id")
     private ServiceType serviceType;
 
-    @Column(name = "service_date")
-    private Instant serviceDate;
+    @Column(name = "start_date")
+    private Instant startDate;
+
+    @Column(name = "final_date")
+    private Instant finalDate;
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "final_price")
+    private double finalPrice;
 
     @OneToOne(mappedBy = "service")
     private Charge charge;
@@ -57,13 +63,16 @@ public class Service {
     public Service() {
     }
 
-    public Service(UUID id, Customer clientCustomer, Customer partnerCustomer, ServiceType serviceType, Instant serviceDate, String description, Charge charge, Rate rate, ServiceStatus serviceStatus, Instant createdAt, Instant updatedAt) {
+
+    public Service(UUID id, Customer clientCustomer, Customer partnerCustomer, ServiceType serviceType, Instant startDate, Instant finalDate, String description, double finalPrice, Charge charge, Rate rate, ServiceStatus serviceStatus, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.clientCustomer = clientCustomer;
         this.partnerCustomer = partnerCustomer;
         this.serviceType = serviceType;
-        this.serviceDate = serviceDate;
+        this.startDate = startDate;
+        this.finalDate = finalDate;
         this.description = description;
+        this.finalPrice = finalPrice;
         this.charge = charge;
         this.rate = rate;
         this.serviceStatus = serviceStatus;
@@ -103,12 +112,20 @@ public class Service {
         this.serviceType = serviceType;
     }
 
-    public Instant getServiceDate() {
-        return serviceDate;
+    public Instant getStartDate() {
+        return startDate;
     }
 
-    public void setServiceDate(Instant serviceDate) {
-        this.serviceDate = serviceDate;
+    public void setStartDate(Instant startDate) {
+        this.startDate = startDate;
+    }
+
+    public Instant getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(Instant finalDate) {
+        this.finalDate = finalDate;
     }
 
     public String getDescription() {
@@ -119,6 +136,22 @@ public class Service {
         this.description = description;
     }
 
+    public double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(double finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
+    public Charge getCharge() {
+        return charge;
+    }
+
+    public void setCharge(Charge charge) {
+        this.charge = charge;
+    }
+
     public Rate getRate() {
         return rate;
     }
@@ -127,16 +160,12 @@ public class Service {
         this.rate = rate;
     }
 
-    public Object getServiceStatus() {
+    public ServiceStatus getServiceStatus() {
         return serviceStatus;
     }
 
     public void setServiceStatus(ServiceStatus serviceStatus) {
         this.serviceStatus = serviceStatus;
-    }
-
-    public void setCharge(Charge charge) {
-        this.charge = charge;
     }
 
     public Instant getCreatedAt() {
