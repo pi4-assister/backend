@@ -2,11 +2,9 @@ package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.service.CustomerService;
+import com.senac.assister.backend.domain.service.ImageServiceImpl;
 import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
-import com.senac.assister.backend.rest.dto.customer.CreateCustomerRequest;
-import com.senac.assister.backend.rest.dto.customer.CreateCustomerResponse;
-import com.senac.assister.backend.rest.dto.customer.CustomerResponse;
-import com.senac.assister.backend.rest.dto.customer.UpdateCustomerRequest;
+import com.senac.assister.backend.rest.dto.customer.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -14,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,7 +32,7 @@ public class CustomerController {
 
     @ApiOperation("List all customers.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Returns list of customers")
+            @ApiResponse(code = 200, message = "Returns list of customers"),
     })
     @GetMapping()
     public ResponseEntity<List<CustomerResponse>> index() {
@@ -87,7 +86,7 @@ public class CustomerController {
     }
 
     @ApiOperation("List all credit cards by customer id.")
-    @GetMapping("/{id}/creditCards")
+    @GetMapping("/{id}/credit-cards")
     public ResponseEntity<List<CreditCardResponse>> getAllCreditCardsByCustomer(@PathVariable UUID id) {
         List<CreditCardResponse> response = customerService.getAllCreditCardsByCustomer(id)
                 .stream()
@@ -95,5 +94,14 @@ public class CustomerController {
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/profile-picture")
+    public ResponseEntity<UploadPictureResponse> uploadImage(@RequestParam("profile-picture") MultipartFile file, @PathVariable UUID id) {
+        String url = customerService.uploadProfilePicture(file, id);
+
+        UploadPictureResponse response = new UploadPictureResponse(id, url);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
