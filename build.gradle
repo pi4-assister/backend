@@ -19,6 +19,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.3.RELEASE'
     compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    compile 'com.google.cloud:google-cloud-storage:1.113.0'
     implementation 'org.flywaydb:flyway-core'
     runtimeOnly 'mysql:mysql-connector-java'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'

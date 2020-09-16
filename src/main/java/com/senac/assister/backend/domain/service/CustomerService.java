@@ -9,6 +9,7 @@ import com.senac.assister.backend.domain.repository.CreditCardRepository;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.security.Hash;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +21,12 @@ public class CustomerService implements CrudService<Customer> {
 
     private final CustomerRepository repository;
     private final CreditCardRepository creditCardRepository;
+    private final ImageServiceImpl imageService;
 
-    public CustomerService(CustomerRepository repository, CreditCardRepository creditCardRepository) {
+    public CustomerService(CustomerRepository repository, CreditCardRepository creditCardRepository, ImageServiceImpl imageService) {
         this.repository = repository;
         this.creditCardRepository = creditCardRepository;
+        this.imageService = imageService;
     }
 
     @Override
@@ -81,6 +84,17 @@ public class CustomerService implements CrudService<Customer> {
         Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
 
         return customer.getCreditCards();
+    }
+
+    public String uploadProfilePicture(MultipartFile profilePicture, UUID id) {
+        Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+
+        String url = imageService.upload(profilePicture, customer);
+
+        customer.setPhotoUrl(url);
+        repository.save(customer);
+
+        return customer.getPhotoUrl();
     }
 
     private String encryptPassword(String password) {

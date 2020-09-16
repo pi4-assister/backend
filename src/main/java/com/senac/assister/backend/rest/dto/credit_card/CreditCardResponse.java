@@ -9,36 +9,22 @@ import java.util.UUID;
 public class CreditCardResponse {
     private static ModelMapper mapper = new ModelMapper();
 
-    private UUID id;
-
     private String token;
 
     private String lastFourDigits;
 
     private String creditCardName;
 
-    private String expirationDate;
-
     private CreditCardBrand brand;
 
     public CreditCardResponse() {
     }
 
-    public CreditCardResponse(UUID id, String token, String lastFourDigits, String creditCardName, String expirationDate, CreditCardBrand brand) {
-        this.id = id;
+    public CreditCardResponse(String token, String lastFourDigits, String creditCardName, CreditCardBrand brand) {
         this.token = token;
         this.lastFourDigits = lastFourDigits;
         this.creditCardName = creditCardName;
-        this.expirationDate = expirationDate;
         this.brand = brand;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getToken() {
@@ -63,14 +49,6 @@ public class CreditCardResponse {
 
     public void setCreditCardName(String creditCardName) {
         this.creditCardName = creditCardName;
-    }
-
-    public String getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
     }
 
     public CreditCardBrand getBrand() {

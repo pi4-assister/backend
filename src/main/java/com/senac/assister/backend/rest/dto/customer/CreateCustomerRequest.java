@@ -5,6 +5,7 @@ import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
 import io.swagger.annotations.ApiModelProperty;
 import org.modelmapper.ModelMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -19,8 +20,7 @@ public class CreateCustomerRequest {
     public CreateCustomerRequest() {
     }
 
-    public CreateCustomerRequest(@NotNull(message = "photoUrl field must be sent.") @Size(min = 1, max = 255, message = "photoUrl must be between 1 and 255 characters") String photoUrl, @NotNull(message = "fullName field must be sent.") @Size(min = 1, max = 255, message = "fullName must be between 1 and 255 characters") String fullName, @NotNull @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters") String personIdentifier, @NotNull(message = "isLegalPerson field must be sent.") boolean isLegalPerson, @Size(min = 1, max = 500, message = "bio must be between 1 and 500 characters") String bio, @NotNull(message = "phoneNumber field must be sent.") @Size(min = 1, max = 45, message = "phoneNumber must be between 1 and 45 characters") String phoneNumber, @NotNull(message = "customerType field must be sent.") CustomerType customerType, String landlineNumber, @NotNull(message = "email field must be sent.") @Email(message = "email should be a valid e-mail.") @Size(min = 1, max = 255, message = "email must be between 1 and 255 characters") String email, @NotNull(message = "password field must be sent.") @Size(min = 1, max = 255, message = "password must be between 1 and 255 characters") String password, @NotNull(message = "birthdate field must be sent.") Instant birthdate, @NotNull(message = "address field must be sent.") @Size(min = 1, max = 255, message = "address must be between 1 and 255 characters") String address, @NotNull(message = "city field must be sent.") @Size(min = 1, max = 255, message = "city must be between 1 and 255 characters") String city, @NotNull(message = "state field must be sent.") @Size(min = 1, max = 255, message = "state must be between 1 and 255 characters") String state, @NotNull(message = "zipCode field must be sent.") @Size(min = 1, max = 45, message = "zipCode must be between 1 and 255 characters") String zipCode) {
-        this.photoUrl = photoUrl;
+    public CreateCustomerRequest(@NotNull(message = "fullName field must be sent.") @Size(min = 1, max = 255, message = "fullName must be between 1 and 255 characters") String fullName, @NotNull @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters") String personIdentifier, @NotNull(message = "isLegalPerson field must be sent.") boolean isLegalPerson, @Size(min = 1, max = 500, message = "bio must be between 1 and 500 characters") String bio, @NotNull(message = "phoneNumber field must be sent.") @Size(min = 1, max = 45, message = "phoneNumber must be between 1 and 45 characters") String phoneNumber, @NotNull(message = "customerType field must be sent.") CustomerType customerType, String landlineNumber, @NotNull(message = "email field must be sent.") @Email(message = "email should be a valid e-mail.") @Size(min = 1, max = 255, message = "email must be between 1 and 255 characters") String email, @NotNull(message = "password field must be sent.") @Size(min = 1, max = 255, message = "password must be between 1 and 255 characters") String password, @NotNull(message = "birthdate field must be sent.") Instant birthdate, @NotNull(message = "address field must be sent.") @Size(min = 1, max = 255, message = "address must be between 1 and 255 characters") String address, @NotNull(message = "city field must be sent.") @Size(min = 1, max = 255, message = "city must be between 1 and 255 characters") String city, @NotNull(message = "state field must be sent.") @Size(min = 1, max = 255, message = "state must be between 1 and 255 characters") String state, @NotNull(message = "zipCode field must be sent.") @Size(min = 1, max = 45, message = "zipCode must be between 1 and 255 characters") String zipCode) {
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
         this.isLegalPerson = isLegalPerson;
@@ -36,11 +36,6 @@ public class CreateCustomerRequest {
         this.state = state;
         this.zipCode = zipCode;
     }
-
-    @ApiModelProperty(value = "Generated.")
-    @NotNull(message = "photoUrl field must be sent.")
-    @Size(min = 1, max = 255, message = "photoUrl must be between 1 and 255 characters")
-    private String photoUrl;
 
     @NotNull(message = "fullName field must be sent.")
     @Size(min = 1, max = 255, message = "fullName must be between 1 and 255 characters")
@@ -92,14 +87,6 @@ public class CreateCustomerRequest {
     @NotNull(message = "zipCode field must be sent.")
     @Size(min = 1, max = 45, message = "zipCode must be between 1 and 255 characters")
     private String zipCode;
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
 
     public String getFullName() {
         return fullName;
