@@ -4,24 +4,24 @@ import java.util.UUID;
 
 public class UploadPictureResponse {
 
-    private UUID costumerId;
+    private UUID customer_id;
 
     private String url;
 
     public UploadPictureResponse() {
     }
 
-    public UploadPictureResponse(UUID costumerId, String url) {
-        this.costumerId = costumerId;
+    public UploadPictureResponse(UUID customer_id, String url) {
+        this.customer_id = customer_id;
         this.url = url;
     }
 
-    public UUID getCostumerId() {
-        return costumerId;
+    public UUID getCustomer_id() {
+        return customer_id;
     }
 
-    public void setCostumerId(UUID costumerId) {
-        this.costumerId = costumerId;
+    public void setCustomer_id(UUID customer_id) {
+        this.customer_id = customer_id;
     }
 
     public String getUrl() {

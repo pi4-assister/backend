@@ -5,7 +5,6 @@ import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
 import org.modelmapper.ModelMapper;
 
-import javax.persistence.Column;
 import java.time.Instant;
 
 public class CustomerResponse {
@@ -44,10 +43,12 @@ public class CustomerResponse {
 
     private Instant createdAt;
 
+    private Instant updatedAt;
+
     public CustomerResponse() {
     }
 
-    public CustomerResponse(String id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus customerStatus, String email, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt) {
+    public CustomerResponse(String id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus customerStatus, String email, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.photoUrl = photoUrl;
         this.fullName = fullName;
@@ -64,6 +65,7 @@ public class CustomerResponse {
         this.state = state;
         this.zipCode = zipCode;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public String getId() {
@@ -188,6 +190,14 @@ public class CustomerResponse {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public void setCreatedAt(Instant createdAt) {

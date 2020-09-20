@@ -7,5 +7,7 @@ package com.senac.assister.backend.domain.enumeration;
 
 // cancelado
 public enum CustomerStatus {
+    REGISTERED,
     HIRED,
+    CANCELED
 }
