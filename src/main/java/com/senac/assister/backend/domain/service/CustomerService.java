@@ -3,6 +3,7 @@ package com.senac.assister.backend.domain.service;
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
+import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.repository.CreditCardRepository;
@@ -22,11 +23,13 @@ public class CustomerService implements CrudService<Customer> {
     private final CustomerRepository repository;
     private final CreditCardRepository creditCardRepository;
     private final ImageServiceImpl imageService;
+    private final EmailService emailService;
 
-    public CustomerService(CustomerRepository repository, CreditCardRepository creditCardRepository, ImageServiceImpl imageService) {
+    public CustomerService(CustomerRepository repository, CreditCardRepository creditCardRepository, ImageServiceImpl imageService, EmailService emailService) {
         this.repository = repository;
         this.creditCardRepository = creditCardRepository;
         this.imageService = imageService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -38,7 +41,9 @@ public class CustomerService implements CrudService<Customer> {
         }
 
         customer.setPassword(encryptPassword(customer.getPassword()));
-        customer.setStatus(CustomerStatus.HIRED);
+        customer.setStatus(CustomerStatus.REGISTERED);
+
+        emailService.sendHtmlEmail(customer, EmailSubjects.CREATE_USER);
         return repository.save(customer);
     }
 
@@ -50,6 +55,7 @@ public class CustomerService implements CrudService<Customer> {
 
         disableCustomerCreditCards(id);
 
+        customer.setStatus(CustomerStatus.CANCELED);
         customer.setActive(false);
 
         return repository.save(customer);
@@ -72,7 +78,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Optional<Customer> findById(UUID id) {
-        return repository.findById(id);
+        return repository.findByIdAndActiveTrue(id);
     }
 
     @Override
@@ -91,6 +97,7 @@ public class CustomerService implements CrudService<Customer> {
 
         String url = imageService.upload(profilePicture, customer);
 
+        customer.setStatus(CustomerStatus.HIRED);
         customer.setPhotoUrl(url);
         repository.save(customer);
 

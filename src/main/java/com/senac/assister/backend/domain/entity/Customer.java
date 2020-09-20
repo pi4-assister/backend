@@ -90,6 +90,29 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(UUID id, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, List<CreditCard> creditCards, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.fullName = fullName;
+        this.personIdentifier = personIdentifier;
+        this.isLegalPerson = isLegalPerson;
+        this.bio = bio;
+        this.phoneNumber = phoneNumber;
+        this.customerType = customerType;
+        this.status = status;
+        this.landlineNumber = landlineNumber;
+        this.email = email;
+        this.password = password;
+        this.birthdate = birthdate;
+        this.address = address;
+        this.creditCards = creditCards;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, List<CreditCard> creditCards, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.photoUrl = photoUrl;

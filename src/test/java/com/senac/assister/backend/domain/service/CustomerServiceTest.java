@@ -21,7 +21,8 @@ class CustomerServiceTest {
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
     private final CreditCardRepository creditCardRepository = mock(CreditCardRepository.class);
     private final ImageServiceImpl imageService = mock(ImageServiceImpl.class);
-    private final CustomerService customerService = new CustomerService(customerRepository, creditCardRepository, imageService);
+    private final EmailService emailService = mock(EmailService.class);
+    private final CustomerService customerService = new CustomerService(customerRepository, creditCardRepository, imageService, emailService);
 
     @Test
     void Create_SuccessCustomer_Success() {
@@ -35,7 +36,7 @@ class CustomerServiceTest {
     void Update_Customer_Success() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.of(customer));
         customerService.update(customer);
 
         verify(customerRepository, times(1)).save(customer);
@@ -45,7 +46,7 @@ class CustomerServiceTest {
     void Update_CustomerNotFound_Fail() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findById(customer.getId())).thenReturn(Optional.empty());
+        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.empty());
 
         CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
             customerService.update(customer);
@@ -60,7 +61,7 @@ class CustomerServiceTest {
     void Delete_Customer_Success() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findById(customer.getId())).thenReturn(Optional.of(customer));
+        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.of(customer));
         customerService.delete(customer.getId());
 
         verify(customerRepository, times(1)).save(customer);
@@ -70,7 +71,7 @@ class CustomerServiceTest {
     void Delete_CustomerNotFound_Fail() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findById(customer.getId())).thenReturn(Optional.empty());
+        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.empty());
 
         CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
             customerService.delete(customer.getId());
@@ -85,14 +86,13 @@ class CustomerServiceTest {
     private Customer createCustomer() {
         return new Customer(
                 UUID.randomUUID(),
-                "photoUrl",
                 "fullName",
                 "personIdentifier",
                 true,
                 "testebio",
                 "965234567",
                 CustomerType.CLIENT,
-                CustomerStatus.HIRED,
+                CustomerStatus.REGISTERED,
                 null,
                 "teste@teste.com",
                 "12345678",
