@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 class CustomerServiceTest {
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-    private final CreditCardRepository creditCardRepository = mock(CreditCardRepository.class);
+    private final CreditCardService creditCardRepository = mock(CreditCardService.class);
     private final ImageServiceImpl imageService = mock(ImageServiceImpl.class);
     private final EmailService emailService = mock(EmailService.class);
     private final CustomerService customerService = new CustomerService(customerRepository, creditCardRepository, imageService, emailService);

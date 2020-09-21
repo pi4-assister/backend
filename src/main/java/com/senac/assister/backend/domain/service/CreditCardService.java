@@ -13,9 +13,9 @@ import java.util.UUID;
 @Service
 public class CreditCardService implements CrudService<CreditCard> {
 
-    private CreditCardRepository repository;
+    private final CreditCardRepository repository;
 
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     public CreditCardService(CreditCardRepository repository, CustomerService customerService) {
         this.repository = repository;
@@ -24,11 +24,11 @@ public class CreditCardService implements CrudService<CreditCard> {
 
     @Override
     public CreditCard save(CreditCard source) {
-        if (customerService.findById(source.getId()) == null) {
+        if (!customerService.findById(source.getId()).isPresent()) {
             throw new CustomerNotFoundException(source.getId());
         }
 
-        deactivateOldCard(source.getId());
+        disableAllCustomerCreditCards(source.getCustomer().getId());
 
         source.buildCreditCard();
 
@@ -55,9 +55,17 @@ public class CreditCardService implements CrudService<CreditCard> {
         return null;
     }
 
-    private void deactivateOldCard(UUID id) {
-        CreditCard creditCard = repository.findTopByOrderByCreatedAtDesc();
-        creditCard.setActive(false);
-        repository.save(creditCard);
+    public void disableAllCustomerCreditCards(UUID id) {
+        List<CreditCard> listOfCreditCards = repository.findAllByCustomerIdAndActiveTrue(id); // and active true
+
+        for (CreditCard card :
+                listOfCreditCards) {
+            disableCreditCard(card);
+        }
+    }
+
+    private void disableCreditCard(CreditCard card) {
+        card.setActive(false);
+        repository.save(card);
     }
 }

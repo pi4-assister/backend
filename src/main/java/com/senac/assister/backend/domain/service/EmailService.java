@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
@@ -36,7 +35,7 @@ public class EmailService {
         MimeMessage mail = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mail, "UTF-8");
 
-        String htmlFile = gethtmlFile(subjects);
+        String htmlFile = getHtmlFile(subjects);
         String htmlContent = decodeHtml(htmlFile);
 
         htmlContent = htmlContent.replace("#customer_name", customer.getFullName());
@@ -60,7 +59,7 @@ public class EmailService {
         return reader.lines().collect(Collectors.joining());
     }
 
-    private String gethtmlFile(EmailSubjects subjects) {
+    private String getHtmlFile(EmailSubjects subjects) {
         String path = "/static/templates";
 
         switch (subjects) {

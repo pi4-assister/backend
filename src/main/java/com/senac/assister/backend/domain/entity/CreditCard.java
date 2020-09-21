@@ -189,14 +189,8 @@ public class CreditCard {
         this.createdAt = Instant.now();
         this.updatedAt = Instant.now();
 
-        String token = paymentService.createCreditCard(this);
-
-        this.token = token;
+        this.token = paymentService.createCreditCard(this);
         this.lastFourDigits = this.creditCardNumber.substring(this.creditCardNumber.length() - 4);
         this.creditCardNumber = null;
-    }
-
-    public void deactivate() {
-        this.active = false;
     }
 }
