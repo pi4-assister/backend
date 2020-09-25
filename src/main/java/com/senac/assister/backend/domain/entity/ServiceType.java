@@ -1,5 +1,9 @@
 package com.senac.assister.backend.domain.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +14,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "service_type")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ServiceType {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,64 +40,4 @@ public class ServiceType {
     @Generated(GenerationTime.ALWAYS)
     @Column(name = "updated_at")
     private Instant updatedAt;
-
-    public ServiceType() {
-    }
-
-    public ServiceType(UUID id, String name, boolean active, double base_price, Instant createdAt, Instant updatedAt) {
-        this.id = id;
-        this.name = name;
-        this.active = active;
-        this.base_price = base_price;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public double getBase_price() {
-        return base_price;
-    }
-
-    public void setBase_price(double price) {
-        this.base_price = price;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

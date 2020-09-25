@@ -1,6 +1,10 @@
 package com.senac.assister.backend.domain.entity;
 
 import com.senac.assister.backend.domain.enumeration.ChargeStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,6 +15,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "charge")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Charge {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -39,73 +47,4 @@ public class Charge {
     @Generated(GenerationTime.ALWAYS)
     @Column(name = "updated_at")
     private Instant updatedAt;
-
-    public Charge() {
-    }
-
-    public Charge(UUID id, CreditCard creditCard, Service service, ChargeStatus status, double amount, Instant createdAt, Instant updatedAt) {
-        this.id = id;
-        this.creditCard = creditCard;
-        this.service = service;
-        this.status = status;
-        this.amount = amount;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public CreditCard getCreditCard() {
-        return creditCard;
-    }
-
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
-    }
-
-    public Service getService() {
-        return service;
-    }
-
-    public void setService(Service service) {
-        this.service = service;
-    }
-
-    public ChargeStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ChargeStatus status) {
-        this.status = status;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

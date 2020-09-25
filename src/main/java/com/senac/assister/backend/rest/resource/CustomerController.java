@@ -1,6 +1,7 @@
 package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.service.CreditCardService;
 import com.senac.assister.backend.domain.service.CustomerService;
 import com.senac.assister.backend.domain.service.ImageServiceImpl;
 import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
@@ -25,9 +26,11 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final CreditCardService creditCardService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, CreditCardService creditCardService) {
         this.customerService = customerService;
+        this.creditCardService = creditCardService;
     }
 
     @ApiOperation("List all customers.")
@@ -88,7 +91,7 @@ public class CustomerController {
     @ApiOperation("List all credit cards by customer id.")
     @GetMapping("/{id}/credit-cards")
     public ResponseEntity<List<CreditCardResponse>> getAllCreditCardsByCustomer(@PathVariable UUID id) {
-        List<CreditCardResponse> response = customerService.getAllCreditCardsByCustomer(id)
+        List<CreditCardResponse> response = creditCardService.findAllByCustomerId(id)
                 .stream()
                 .map(CreditCardResponse::convertToDto)
                 .collect(Collectors.toList());

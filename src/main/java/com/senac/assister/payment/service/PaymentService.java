@@ -11,7 +11,7 @@ public interface PaymentService {
      * @param creditCard
      * @return
      */
-    public String createCreditCard(CreditCard creditCard);
+    public String tokenization(CreditCard creditCard);
 
     /**
      * Authorize payment
