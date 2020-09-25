@@ -50,8 +50,6 @@ public class CustomerService implements CrudService<Customer> {
 
         Customer customer = req.orElseThrow(() -> new CustomerNotFoundException(id));
 
-//        creditCardService.disableAllCustomerCreditCards(id);
-
         customer.setStatus(CustomerStatus.CANCELED);
         customer.setActive(false);
 
@@ -82,21 +80,6 @@ public class CustomerService implements CrudService<Customer> {
     public List<Customer> findAll() {
         return repository.findAll();
     }
-
-    // Todo remove from here \/
-//    public CreditCard saveCreditCardToCustomer(CreditCard card) {
-//        Customer customer = findById(card.getCustomer().getId()).orElseThrow(() -> new CustomerNotFoundException(card.getCustomer().getId()));
-//
-//        creditCardService.disableAllCustomerCreditCards(customer.getId());
-//
-//        return creditCardService.createCreditCard(card);
-//    }
-//
-//    public List<CreditCard> getAllCreditCardsByCustomer(UUID id) {
-//        Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
-//
-//        return customer.getCreditCards();
-//    }
 
     public String uploadProfilePicture(MultipartFile profilePicture, UUID id) {
         Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
