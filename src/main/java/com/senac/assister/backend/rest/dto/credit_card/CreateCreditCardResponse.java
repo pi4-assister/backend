@@ -8,22 +8,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CreditCardResponse {
+public class CreateCreditCardResponse {
     private static ModelMapper mapper = new ModelMapper();
 
-    private String lastFourDigits;
+    private String token;
 
-    private String creditCardName;
-
-    private CreditCardBrand brand;
-
-    public static CreditCardResponse convertToDto(CreditCard request) {
-        return mapper.map(request, CreditCardResponse.class);
+    public static CreateCreditCardResponse convertToDto(CreditCard request) {
+        return mapper.map(request, CreateCreditCardResponse.class);
     }
 }

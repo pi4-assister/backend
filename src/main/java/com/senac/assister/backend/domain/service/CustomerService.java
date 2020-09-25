@@ -6,7 +6,6 @@ import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
-import com.senac.assister.backend.domain.repository.CreditCardRepository;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.security.Hash;
 import org.springframework.stereotype.Service;
@@ -15,19 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements CrudService<Customer> {
 
     private final CustomerRepository repository;
-    private final CreditCardRepository creditCardRepository;
     private final ImageServiceImpl imageService;
     private final EmailService emailService;
 
-    public CustomerService(CustomerRepository repository, CreditCardRepository creditCardRepository, ImageServiceImpl imageService, EmailService emailService) {
+    public CustomerService(CustomerRepository repository, ImageServiceImpl imageService, EmailService emailService) {
         this.repository = repository;
-        this.creditCardRepository = creditCardRepository;
         this.imageService = imageService;
         this.emailService = emailService;
     }
@@ -44,6 +40,7 @@ public class CustomerService implements CrudService<Customer> {
         customer.setStatus(CustomerStatus.REGISTERED);
 
         emailService.sendHtmlEmail(customer, EmailSubjects.CREATE_USER);
+
         return repository.save(customer);
     }
 
@@ -52,8 +49,6 @@ public class CustomerService implements CrudService<Customer> {
         Optional<Customer> req = findById(id);
 
         Customer customer = req.orElseThrow(() -> new CustomerNotFoundException(id));
-
-        disableCustomerCreditCards(id);
 
         customer.setStatus(CustomerStatus.CANCELED);
         customer.setActive(false);
@@ -86,12 +81,6 @@ public class CustomerService implements CrudService<Customer> {
         return repository.findAll();
     }
 
-    public List<CreditCard> getAllCreditCardsByCustomer(UUID id) {
-        Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
-
-        return customer.getCreditCards();
-    }
-
     public String uploadProfilePicture(MultipartFile profilePicture, UUID id) {
         Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
 
@@ -106,15 +95,5 @@ public class CustomerService implements CrudService<Customer> {
 
     private String encryptPassword(String password) {
         return Hash.convertToMd5(password);
-    }
-
-    private List<CreditCard> disableCustomerCreditCards(UUID id) {
-        return getAllCreditCardsByCustomer(id)
-                .stream()
-                .map(creditCard -> {
-                    creditCard.setActive(false);
-                    return creditCardRepository.save(creditCard);
-                })
-                .collect(Collectors.toList());
     }
 }

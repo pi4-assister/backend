@@ -19,10 +19,9 @@ import static org.mockito.Mockito.*;
 
 class CustomerServiceTest {
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-    private final CreditCardRepository creditCardRepository = mock(CreditCardRepository.class);
     private final ImageServiceImpl imageService = mock(ImageServiceImpl.class);
     private final EmailService emailService = mock(EmailService.class);
-    private final CustomerService customerService = new CustomerService(customerRepository, creditCardRepository, imageService, emailService);
+    private final CustomerService customerService = new CustomerService(customerRepository, imageService, emailService);
 
     @Test
     void Create_SuccessCustomer_Success() {
@@ -98,7 +97,6 @@ class CustomerServiceTest {
                 "12345678",
                 Instant.now(),
                 "asdkasdkoasd 1100",
-                new ArrayList<>(),
                 "Sao Paulo",
                 "Sao Paulo",
                 "04672234",

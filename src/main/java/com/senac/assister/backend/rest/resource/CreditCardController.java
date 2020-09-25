@@ -2,9 +2,9 @@ package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.service.CreditCardService;
+import com.senac.assister.backend.domain.service.CustomerService;
 import com.senac.assister.backend.rest.dto.credit_card.CreateCreditCardRequest;
-import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
-import org.modelmapper.ModelMapper;
+import com.senac.assister.backend.rest.dto.credit_card.CreateCreditCardResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,32 +16,21 @@ import javax.validation.Valid;
 @RequestMapping("/api/v1/card")
 public class CreditCardController {
 
-    private final ModelMapper modelMapper;
+    private final CustomerService customerService;
 
     private final CreditCardService creditCardService;
 
-    public CreditCardController(ModelMapper modelMapper, CreditCardService creditCardService) {
-        this.modelMapper = modelMapper;
+    public CreditCardController(CustomerService customerService, CreditCardService creditCardService) {
+        this.customerService = customerService;
         this.creditCardService = creditCardService;
     }
 
     @PostMapping()
-    public ResponseEntity<CreditCardResponse> createCard(@Valid @RequestBody CreateCreditCardRequest createCreditCardRequest) {
-        createCreditCardRequest.build();
+    public ResponseEntity<CreateCreditCardResponse> createCard(@Valid @RequestBody CreateCreditCardRequest createCreditCardRequest) {
+        CreditCard card = creditCardService.save(CreateCreditCardRequest.convertToEntity(createCreditCardRequest));
 
-        CreditCard creditCard = creditCardService.save(convertToEntity(createCreditCardRequest));
-
-        CreditCardResponse response = convertToDto(creditCard);
+        CreateCreditCardResponse response = CreateCreditCardResponse.convertToDto(card);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-
-    }
-
-    private CreditCardResponse convertToDto(CreditCard creditCard) {
-        return modelMapper.map(creditCard, CreditCardResponse.class);
-    }
-
-    private CreditCard convertToEntity(CreateCreditCardRequest creditCardDto) {
-        return modelMapper.map(creditCardDto, CreditCard.class);
     }
 }

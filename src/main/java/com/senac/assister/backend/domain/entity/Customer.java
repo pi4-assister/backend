@@ -1,20 +1,26 @@
 package com.senac.assister.backend.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
-import org.hibernate.annotations.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.Instant;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Table(name = "customer")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
 
     @Id
@@ -63,9 +69,9 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
-    private List<CreditCard> creditCards;
+//    @JsonIgnore
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+//    private List<CreditCard> creditCards;
 
     @Column(name = "city")
     private String city;
@@ -87,10 +93,7 @@ public class Customer {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public Customer() {
-    }
-
-    public Customer(UUID id, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, List<CreditCard> creditCards, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
+    public Customer(UUID id, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
@@ -104,208 +107,11 @@ public class Customer {
         this.password = password;
         this.birthdate = birthdate;
         this.address = address;
-        this.creditCards = creditCards;
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
         this.active = active;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Customer(UUID id, String photoUrl, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, List<CreditCard> creditCards, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
-        this.id = id;
-        this.photoUrl = photoUrl;
-        this.fullName = fullName;
-        this.personIdentifier = personIdentifier;
-        this.isLegalPerson = isLegalPerson;
-        this.bio = bio;
-        this.phoneNumber = phoneNumber;
-        this.customerType = customerType;
-        this.status = status;
-        this.landlineNumber = landlineNumber;
-        this.email = email;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.address = address;
-        this.creditCards = creditCards;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
-        this.active = active;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public String getPersonIdentifier() {
-        return personIdentifier;
-    }
-
-    public boolean getLegalPerson() {
-        return isLegalPerson;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public CustomerType getCustomerType() {
-        return customerType;
-    }
-
-    public CustomerStatus getStatus() {
-        return status;
-    }
-
-    public String getLandlineNumber() {
-        return landlineNumber;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Instant getBirthdate() {
-        return birthdate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public boolean getActive() {
-        return active;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public void setPersonIdentifier(String personIdentifier) {
-        this.personIdentifier = personIdentifier;
-    }
-
-    public boolean isLegalPerson() {
-        return isLegalPerson;
-    }
-
-    public void setLegalPerson(boolean legalPerson) {
-        isLegalPerson = legalPerson;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setCustomerType(CustomerType customerType) {
-        this.customerType = customerType;
-    }
-
-    public void setStatus(CustomerStatus status) {
-        this.status = status;
-    }
-
-    public void setLandlineNumber(String landlineNumber) {
-        this.landlineNumber = landlineNumber;
-    }
-
-    public List<CreditCard> getCreditCards() {
-        return creditCards;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setBirthdate(Instant birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
