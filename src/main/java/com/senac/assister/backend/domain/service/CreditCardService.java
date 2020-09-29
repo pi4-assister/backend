@@ -2,7 +2,6 @@ package com.senac.assister.backend.domain.service;
 
 
 import com.senac.assister.backend.domain.entity.CreditCard;
-import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.exception.CreditCardNotFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.repository.CreditCardRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,8 +27,7 @@ public class CreditCardService implements CrudService<CreditCard> {
 
     @Override
     public CreditCard save(CreditCard source) {
-        customerService.findById(source.getCustomer().getId())
-                .orElseThrow(() -> new CustomerNotFoundException(source.getCustomer().getId()));
+        customerService.findById(source.getCustomer().getId());
 
         source.setCreatedAt(Instant.now());
         source.setUpdatedAt(Instant.now());
@@ -62,8 +59,8 @@ public class CreditCardService implements CrudService<CreditCard> {
     }
 
     @Override
-    public Optional<CreditCard> findById(UUID id) {
-        return repository.findByIdAndActiveTrue(id);
+    public CreditCard findById(UUID id) {
+        return repository.findByIdAndActiveTrue(id).orElseThrow(() -> new CreditCardNotFoundException(id));
     }
 
     @Override
@@ -71,8 +68,12 @@ public class CreditCardService implements CrudService<CreditCard> {
         return repository.findAll();
     }
 
-    public List<CreditCard> findAllByCustomerId(UUID id) {
-        return repository.findAllByCustomerIdAndActiveTrue(id);
+    public List<CreditCard> findAllByCustomerId(UUID customerId) {
+        return repository.findAllByCustomerIdAndActiveTrue(customerId);
+    }
+
+    public CreditCard findActiveCreditCard(UUID id) {
+        return repository.findOneByCustomerIdAndActiveTrue(id).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
     public void disableAllCustomerCreditCards(UUID customerId) {
