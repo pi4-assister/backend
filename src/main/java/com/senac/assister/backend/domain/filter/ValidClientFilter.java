@@ -26,8 +26,8 @@ public class ValidClientFilter implements Filter {
         final String URL = ((HttpServletRequest)request).getRequestURL().toString();
         final String[] PATHSNOVALID = {"Teste"};
         for(int i = 0; i < PATHSNOVALID.length; i++){
-            if(!URL.contains(PATHSNOVALID[i]))
-                verifyUserSession(request, response, chain);
+            //if(!URL.contains(PATHSNOVALID[i]))
+              //  verifyUserSession(request, response, chain);
         }
         // if not down in verifyUserSession or some exception proceed request
         chain.doFilter(request, response);
