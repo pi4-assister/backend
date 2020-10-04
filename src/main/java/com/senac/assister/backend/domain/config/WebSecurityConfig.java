@@ -43,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // config endPoints
         http.httpBasic().and().authorizeRequests()
-                .antMatchers("/login").permitAll()
+                //TODO - define paths and authority
+                .antMatchers("/**").hasAuthority("USER")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint());

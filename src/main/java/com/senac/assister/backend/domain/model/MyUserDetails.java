@@ -20,18 +20,18 @@ public class MyUserDetails implements UserDetails {
     // TODO - add roles in user
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List list = new ArrayList<GrantedAuthority>();
+        list.add(new SimpleGrantedAuthority("USER"));
+        return list;
     }
 
     @Override
     public String getPassword() {
-        System.out.println(customer.getPassword());
         return customer.getPassword();
     }
 
     @Override
     public String getUsername() {
-        System.out.println(customer.getEmail());
         return customer.getEmail();
     }
 
