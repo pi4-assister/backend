@@ -1,5 +1,6 @@
 package com.senac.assister.backend.rest.resource;
 
+import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.service.CreditCardService;
 import com.senac.assister.backend.domain.service.CustomerService;
@@ -95,6 +96,16 @@ public class CustomerController {
                 .stream()
                 .map(CreditCardResponse::convertToDto)
                 .collect(Collectors.toList());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ApiOperation("List active credit card by customer id.")
+    @GetMapping("/{id}/credit-card")
+    public ResponseEntity<CreditCardResponse> getActiveCreditCardByCustomerId(@PathVariable UUID id) {
+        CreditCard card = creditCardService.findActiveCreditCard(id);
+
+        CreditCardResponse response = CreditCardResponse.convertToDto(card);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

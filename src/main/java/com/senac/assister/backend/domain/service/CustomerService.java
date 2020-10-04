@@ -46,9 +46,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer delete(UUID id) {
-        Optional<Customer> req = findById(id);
-
-        Customer customer = req.orElseThrow(() -> new CustomerNotFoundException(id));
+        Customer customer = findById(id);
 
         customer.setStatus(CustomerStatus.CANCELED);
         customer.setActive(false);
@@ -58,7 +56,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer update(Customer customer) {
-        Customer customerFound = findById(customer.getId()).orElseThrow(() -> new CustomerNotFoundException(customer.getId()));
+        Customer customerFound = findById(customer.getId());
 
         if (!customerFound.getPassword().equals(customer.getPassword())) {
             customer.setPassword(encryptPassword(customer.getPassword()));
@@ -68,12 +66,12 @@ public class CustomerService implements CrudService<Customer> {
     }
 
     public Customer show(UUID id) {
-        return findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+        return findById(id);
     }
 
     @Override
-    public Optional<Customer> findById(UUID id) {
-        return repository.findByIdAndActiveTrue(id);
+    public Customer findById(UUID id) {
+        return repository.findByIdAndActiveTrue(id).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
     @Override
@@ -82,7 +80,7 @@ public class CustomerService implements CrudService<Customer> {
     }
 
     public String uploadProfilePicture(MultipartFile profilePicture, UUID id) {
-        Customer customer = findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
+        Customer customer = findById(id);
 
         String url = imageService.upload(profilePicture, customer);
 
