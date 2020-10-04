@@ -1,6 +1,7 @@
 package com.senac.assister.backend.domain.model;
 
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,11 +18,10 @@ public class MyUserDetails implements UserDetails {
         this.customer = customer;
     }
 
-    // TODO - add roles in user
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List list = new ArrayList<GrantedAuthority>();
-        list.add(new SimpleGrantedAuthority("USER"));
+        customer.getRoles().forEach(role -> list.add(new SimpleGrantedAuthority(role.getDesc())));
         return list;
     }
 
