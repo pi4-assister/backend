@@ -70,14 +70,6 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "role")
-    @JoinTable(
-                name = "user_roles",
-                joinColumns = @JoinColumn(name = "customer_id"),
-                inverseJoinColumns =  @JoinColumn(name ="role_id")
-              )
-    private List<Role> roles;
-
 //    @JsonIgnore
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
 //    private List<CreditCard> creditCards;
@@ -102,7 +94,7 @@ public class Customer {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public Customer(UUID id, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt, List<Role> roles) {
+    public Customer(UUID id, String fullName, String personIdentifier, boolean isLegalPerson, String bio, String phoneNumber, CustomerType customerType, CustomerStatus status, String landlineNumber, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, boolean active, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
@@ -122,7 +114,6 @@ public class Customer {
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.roles = roles;
     }
 
     @Override

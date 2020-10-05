@@ -26,25 +26,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        // method valid email user
         authProvider.setUserDetailsService(new UserDetailsServiceImpl(this.customerRepository));
-        // method verify password tooth client is equals password user db
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authProvider;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // set obj resposible per authentication
         auth.authenticationProvider(authenticationProvider());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // config endPoints
         http.httpBasic().and().authorizeRequests()
                 //TODO - define paths and authority
-                .antMatchers("/**").hasAuthority("USER")
+                .antMatchers("/**").hasAuthority("CLIENT")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint());
