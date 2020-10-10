@@ -30,13 +30,13 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer save(Customer customer) {
-        Optional<Customer> customerFound = repository.findByEmailAndActiveTrue(customer.getEmail());
+        Optional<Customer> customerFound = repository.findByEmailAndStatusNot(customer.getEmail(), CustomerStatus.CANCELED);
 
         if (customerFound.isPresent()) {
             throw new CustomerAlreadyFoundException(customerFound.get().getEmail());
         }
 
-        customer.setPassword(encryptPassword(customer.getPassword()));
+        customer.setEncrypted_password(encryptPassword(customer.getEncrypted_password()));
         customer.setStatus(CustomerStatus.REGISTERED);
 
         emailService.sendHtmlEmail(customer, EmailSubjects.CREATE_USER);
@@ -49,7 +49,6 @@ public class CustomerService implements CrudService<Customer> {
         Customer customer = findById(id);
 
         customer.setStatus(CustomerStatus.CANCELED);
-        customer.setActive(false);
 
         return repository.save(customer);
     }
@@ -58,8 +57,8 @@ public class CustomerService implements CrudService<Customer> {
     public Customer update(Customer customer) {
         Customer customerFound = findById(customer.getId());
 
-        if (!customerFound.getPassword().equals(customer.getPassword())) {
-            customer.setPassword(encryptPassword(customer.getPassword()));
+        if (!customerFound.getEncrypted_password().equals(customer.getEncrypted_password())) {
+            customer.setEncrypted_password(encryptPassword(customer.getEncrypted_password()));
         }
 
         return repository.save(customer);
@@ -71,7 +70,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer findById(UUID id) {
-        return repository.findByIdAndActiveTrue(id).orElseThrow(() -> new CustomerNotFoundException(id));
+        return repository.findByIdAndStatusNot(id, CustomerStatus.CANCELED).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
     @Override

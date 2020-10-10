@@ -1,7 +1,0 @@
-ALTER TABLE `application`.`service_type`
-CHANGE COLUMN `price` `base_price` DECIMAL(6,2) NOT NULL ;
-
-ALTER TABLE `application`.`service`
-ADD COLUMN `final_price` DECIMAL(6,2) NOT NULL AFTER `description`,
-CHANGE COLUMN `created_at` `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-CHANGE COLUMN `updated_at` `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ;

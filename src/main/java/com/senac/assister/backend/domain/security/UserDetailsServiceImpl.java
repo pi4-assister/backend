@@ -1,7 +1,7 @@
-package com.senac.assister.backend.domain.service;
+package com.senac.assister.backend.domain.security;
 
-import com.senac.assister.backend.domain.model.MyUserDetails;
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,17 +12,17 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 
-    private final CustomerRepository customerRepository;
+    private final CustomerRepository repository;
 
-    public UserDetailsServiceImpl(CustomerRepository custRepo) {
-        this.customerRepository = custRepo;
+    public UserDetailsServiceImpl(CustomerRepository customerRepository) {
+        this.repository = customerRepository;
     }
 
-    // method responsible per get user and yours credentials
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            Customer customer = customerRepository.findByEmailAndActiveTrue(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
-            return new MyUserDetails(customer);
+        Customer customer = repository.findByEmailAndStatusNot(username, CustomerStatus.CANCELED)
+                .orElseThrow(() -> new UsernameNotFoundException("Could not find user " + username));
+
+        return new MyUserDetails(customer);
     }
 }

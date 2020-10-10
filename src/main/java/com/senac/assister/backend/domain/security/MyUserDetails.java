@@ -1,4 +1,4 @@
-package com.senac.assister.backend.domain.model;
+package com.senac.assister.backend.domain.security;
 
 import com.senac.assister.backend.domain.entity.Customer;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +13,7 @@ public class MyUserDetails implements UserDetails {
 
     private final Customer customer;
 
-    public MyUserDetails(Customer customer){
+    public MyUserDetails(Customer customer) {
         this.customer = customer;
     }
 
@@ -21,12 +21,13 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List list = new ArrayList<GrantedAuthority>();
         list.add(new SimpleGrantedAuthority(customer.getCustomerType().toString()));
+
         return list;
     }
 
     @Override
     public String getPassword() {
-        return customer.getPassword();
+        return customer.getEncrypted_password();
     }
 
     @Override
