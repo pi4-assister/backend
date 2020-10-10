@@ -1,18 +1,15 @@
 package com.senac.assister.backend.rest.dto.customer;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.multipart.MultipartFile;
+import org.modelmapper.PropertyMap;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;

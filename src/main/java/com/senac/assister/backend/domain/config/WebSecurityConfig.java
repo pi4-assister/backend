@@ -2,6 +2,7 @@ package com.senac.assister.backend.domain.config;
 
 import com.senac.assister.backend.domain.exception.RestAuthenticationEntryPoint;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
+import com.senac.assister.backend.domain.security.AssisterPasswordEncoder;
 import com.senac.assister.backend.domain.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService(new UserDetailsServiceImpl(this.customerRepository));
-        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        authProvider.setPasswordEncoder(AssisterPasswordEncoder.encoder());
 
         return authProvider;
     }
@@ -45,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**")
+                .antMatchers("/api/v1/customer/**")
                 .hasAuthority("CLIENT")
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())

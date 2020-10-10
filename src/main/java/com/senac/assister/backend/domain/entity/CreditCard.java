@@ -62,8 +62,7 @@ public class CreditCard {
     @Generated(GenerationTime.ALWAYS)
     @Column(name = "updated_at")
     private Instant updatedAt;
-
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -8,6 +8,7 @@ import com.senac.assister.backend.domain.repository.CreditCardRepository;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.util.ArrayList;

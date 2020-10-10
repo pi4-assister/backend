@@ -39,7 +39,7 @@ public class CustomerController {
             @ApiResponse(code = 200, message = "Returns list of customers"),
     })
     @GetMapping()
-    public ResponseEntity<List<CustomerResponse>> index() {
+    public ResponseEntity<List<CustomerResponse>> listAllCustomers() {
         List<CustomerResponse> response = customerService.findAll()
                 .stream()
                 .map(CustomerResponse::convertToDto)

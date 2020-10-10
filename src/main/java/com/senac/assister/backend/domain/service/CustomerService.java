@@ -7,7 +7,11 @@ import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
+import com.senac.assister.backend.domain.security.AssisterPasswordEncoder;
 import com.senac.assister.backend.domain.security.Hash;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +25,8 @@ public class CustomerService implements CrudService<Customer> {
     private final CustomerRepository repository;
     private final ImageServiceImpl imageService;
     private final EmailService emailService;
+
+    private final PasswordEncoder encoder = AssisterPasswordEncoder.encoder();
 
     public CustomerService(CustomerRepository repository, ImageServiceImpl imageService, EmailService emailService) {
         this.repository = repository;
@@ -36,7 +42,7 @@ public class CustomerService implements CrudService<Customer> {
             throw new CustomerAlreadyFoundException(customerFound.get().getEmail());
         }
 
-        customer.setEncrypted_password(encryptPassword(customer.getEncrypted_password()));
+        customer.setPassword(encryptPassword(customer.getPassword()));
         customer.setStatus(CustomerStatus.REGISTERED);
 
         emailService.sendHtmlEmail(customer, EmailSubjects.CREATE_USER);
@@ -57,8 +63,8 @@ public class CustomerService implements CrudService<Customer> {
     public Customer update(Customer customer) {
         Customer customerFound = findById(customer.getId());
 
-        if (!customerFound.getEncrypted_password().equals(customer.getEncrypted_password())) {
-            customer.setEncrypted_password(encryptPassword(customer.getEncrypted_password()));
+        if (!customerFound.getPassword().equals(customer.getPassword())) {
+            customer.setPassword(encryptPassword(customer.getPassword()));
         }
 
         return repository.save(customer);
@@ -91,6 +97,6 @@ public class CustomerService implements CrudService<Customer> {
     }
 
     private String encryptPassword(String password) {
-        return Hash.convertToMd5(password);
+        return encoder.encode(password);
     }
 }
