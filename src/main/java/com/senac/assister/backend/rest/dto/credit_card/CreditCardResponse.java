@@ -15,9 +15,9 @@ import org.modelmapper.ModelMapper;
 public class CreditCardResponse {
     private static ModelMapper mapper = new ModelMapper();
 
-    private String lastFourDigits;
+    private String holder_number;
 
-    private String creditCardName;
+    private String holderName;
 
     private CreditCardBrand brand;
 

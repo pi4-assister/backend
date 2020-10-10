@@ -25,9 +25,6 @@ public class Rate {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @OneToOne(mappedBy = "rate")
-    private Service service;
-
     @Column(name = "score")
     private double score;
 

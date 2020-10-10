@@ -33,9 +33,6 @@ public class CreateCustomerRequest {
     @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters")
     private String personIdentifier;
 
-    @NotNull(message = "isLegalPerson field must be sent.")
-    private boolean isLegalPerson;
-
     @Size(min = 1, max = 500, message = "bio must be between 1 and 500 characters")
     private String bio;
 
@@ -46,7 +43,7 @@ public class CreateCustomerRequest {
     @NotNull(message = "customerType field must be sent.")
     private CustomerType customerType;
 
-    private String landlineNumber;
+    private String emergencyNumber;
 
     @NotNull(message = "email field must be sent.")
     @Email(message = "email should be a valid e-mail.")

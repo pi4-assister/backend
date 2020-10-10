@@ -26,16 +26,12 @@ public class Service {
     private UUID id;
 
     @ManyToOne()
-    @JoinColumn(name = "customer_client_id")
-    private Customer clientCustomer;
+    @JoinColumn(name = "customer_assister_id")
+    private Customer assisterCustomer;
 
     @ManyToOne()
-    @JoinColumn(name = "customer_partner_id")
-    private Customer partnerCustomer;
-
-    @OneToOne()
-    @JoinColumn(name = "service_type_id")
-    private ServiceType serviceType;
+    @JoinColumn(name = "customer_client_id")
+    private Customer clientCustomer;
 
     @Column(name = "start_date")
     private Instant startDate;
@@ -46,8 +42,8 @@ public class Service {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "final_price")
-    private double finalPrice;
+    @Column(name = "total_price")
+    private double totalPrice;
 
     @OneToOne(mappedBy = "service")
     private Charge charge;

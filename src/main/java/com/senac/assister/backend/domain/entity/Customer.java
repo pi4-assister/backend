@@ -114,7 +114,6 @@ public class Customer {
     @Column(name = "zip_code")
     private String zipCode;
 
-
     @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")
     private Instant createdAt;

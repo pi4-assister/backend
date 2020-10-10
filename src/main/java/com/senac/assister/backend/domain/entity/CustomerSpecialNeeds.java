@@ -13,12 +13,12 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "special_needs")
+@Table(name = "customer_special_needs")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpecialNeeds {
+public class CustomerSpecialNeeds {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -29,7 +29,7 @@ public class SpecialNeeds {
     private Customer customer;
 
     @OneToOne()
-    @JoinColumn(name = "special_need_type_id")
+    @JoinColumn(name = "special_needs_type_id")
     private SpecialNeedType specialNeedType;
 
     @Column(name = "active")
