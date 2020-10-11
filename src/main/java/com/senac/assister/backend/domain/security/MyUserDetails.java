@@ -11,28 +11,28 @@ import java.util.List;
 
 public class MyUserDetails implements UserDetails {
 
-    private final Customer customer;
+    public final Customer loggedCustomer;
 
-    public MyUserDetails(Customer customer) {
-        this.customer = customer;
+    public MyUserDetails(Customer loggedCustomer) {
+        this.loggedCustomer = loggedCustomer;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List list = new ArrayList<GrantedAuthority>();
-        list.add(new SimpleGrantedAuthority(customer.getCustomerType().toString()));
+        list.add(new SimpleGrantedAuthority(loggedCustomer.getCustomerType().toString()));
 
         return list;
     }
 
     @Override
     public String getPassword() {
-        return customer.getPassword();
+        return loggedCustomer.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return customer.getEmail();
+        return loggedCustomer.getEmail();
     }
 
     @Override
