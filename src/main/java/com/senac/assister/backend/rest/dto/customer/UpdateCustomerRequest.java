@@ -51,7 +51,7 @@ public class UpdateCustomerRequest {
     @NotNull(message = "customerType field must be sent.")
     private CustomerType customerType;
 
-    private String landlineNumber;
+    private String emergencyNumber;
 
     @NotNull(message = "email field must be sent.")
     @Email(message = "email should be a valid e-mail.")

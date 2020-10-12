@@ -2,6 +2,8 @@ package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.security.MyUserDetails;
+import com.senac.assister.backend.domain.security.UserDetailsServiceImpl;
 import com.senac.assister.backend.domain.service.CreditCardService;
 import com.senac.assister.backend.domain.service.CustomerService;
 import com.senac.assister.backend.domain.service.ImageServiceImpl;
@@ -13,6 +15,7 @@ import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +42,7 @@ public class CustomerController {
             @ApiResponse(code = 200, message = "Returns list of customers"),
     })
     @GetMapping()
-    public ResponseEntity<List<CustomerResponse>> index() {
+    public ResponseEntity<List<CustomerResponse>> listAllCustomers() {
         List<CustomerResponse> response = customerService.findAll()
                 .stream()
                 .map(CustomerResponse::convertToDto)

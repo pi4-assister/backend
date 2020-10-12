@@ -8,6 +8,7 @@ import com.senac.assister.backend.domain.repository.CreditCardRepository;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ class CustomerServiceTest {
     void Update_Customer_Success() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.of(customer));
+        when(customerRepository.findByIdAndStatusNot(customer.getId(), CustomerStatus.CANCELED)).thenReturn(Optional.of(customer));
         customerService.update(customer);
 
         verify(customerRepository, times(1)).save(customer);
@@ -45,7 +46,7 @@ class CustomerServiceTest {
     void Update_CustomerNotFound_Fail() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.empty());
+        when(customerRepository.findByIdAndStatusNot(customer.getId(), CustomerStatus.CANCELED)).thenReturn(Optional.empty());
 
         CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
             customerService.update(customer);
@@ -60,7 +61,7 @@ class CustomerServiceTest {
     void Delete_Customer_Success() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.of(customer));
+        when(customerRepository.findByIdAndStatusNot(customer.getId(), CustomerStatus.CANCELED)).thenReturn(Optional.of(customer));
         customerService.delete(customer.getId());
 
         verify(customerRepository, times(1)).save(customer);
@@ -70,7 +71,7 @@ class CustomerServiceTest {
     void Delete_CustomerNotFound_Fail() {
         Customer customer = createCustomer();
 
-        when(customerRepository.findByIdAndActiveTrue(customer.getId())).thenReturn(Optional.empty());
+        when(customerRepository.findByIdAndStatusNot(customer.getId(), CustomerStatus.CANCELED)).thenReturn(Optional.empty());
 
         CustomerNotFoundException exception = assertThrows(CustomerNotFoundException.class, () -> {
             customerService.delete(customer.getId());
@@ -81,26 +82,24 @@ class CustomerServiceTest {
         verify(customerRepository, never()).save(customer);
     }
 
-
     private Customer createCustomer() {
         return new Customer(
                 UUID.randomUUID(),
-                "fullName",
-                "personIdentifier",
-                true,
-                "testebio",
-                "965234567",
+                "photoUrl",
+                "Full name",
+                "08976537539",
+                "bio",
+                "957823402",
+                "923402148",
                 CustomerType.CLIENT,
                 CustomerStatus.REGISTERED,
-                null,
-                "teste@teste.com",
-                "12345678",
+                "email@gmail.com",
+                "fd4c2b1441c3319eaa14e1d63f64336e",
                 Instant.now(),
-                "asdkasdkoasd 1100",
-                "Sao Paulo",
-                "Sao Paulo",
-                "04672234",
-                true,
+                "address",
+                "city",
+                "state",
+                "04234098",
                 Instant.now(),
                 Instant.now()
         );

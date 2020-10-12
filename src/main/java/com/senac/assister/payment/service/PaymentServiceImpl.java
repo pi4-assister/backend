@@ -15,8 +15,8 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public String tokenization(CreditCard creditCard) {
-        String paymentInfo = creditCard.getCreditCardNumber() +
-                creditCard.getCreditCardName() +
+        String paymentInfo = creditCard.getHolderNumber() +
+                creditCard.getHolderName() +
                 creditCard.getExpirationDate() +
                 creditCard.getBrand().toString() +
                 creditCard.getCreatedAt().toString();

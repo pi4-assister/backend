@@ -27,11 +27,11 @@ public class CustomerResponse {
 
     private String personIdentifier;
 
-    private boolean isLegalPerson;
-
     private String bio;
 
     private String phoneNumber;
+
+    private String emergencyNumber;
 
     private CustomerType customerType;
 

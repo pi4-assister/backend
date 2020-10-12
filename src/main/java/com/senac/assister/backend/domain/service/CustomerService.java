@@ -7,7 +7,11 @@ import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
+import com.senac.assister.backend.domain.security.AssisterPasswordEncoder;
 import com.senac.assister.backend.domain.security.Hash;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +26,8 @@ public class CustomerService implements CrudService<Customer> {
     private final ImageServiceImpl imageService;
     private final EmailService emailService;
 
+    private final PasswordEncoder encoder = AssisterPasswordEncoder.encoder();
+
     public CustomerService(CustomerRepository repository, ImageServiceImpl imageService, EmailService emailService) {
         this.repository = repository;
         this.imageService = imageService;
@@ -30,7 +36,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer save(Customer customer) {
-        Optional<Customer> customerFound = repository.findByEmailAndActiveTrue(customer.getEmail());
+        Optional<Customer> customerFound = repository.findByEmailAndStatusNot(customer.getEmail(), CustomerStatus.CANCELED);
 
         if (customerFound.isPresent()) {
             throw new CustomerAlreadyFoundException(customerFound.get().getEmail());
@@ -49,7 +55,6 @@ public class CustomerService implements CrudService<Customer> {
         Customer customer = findById(id);
 
         customer.setStatus(CustomerStatus.CANCELED);
-        customer.setActive(false);
 
         return repository.save(customer);
     }
@@ -71,7 +76,7 @@ public class CustomerService implements CrudService<Customer> {
 
     @Override
     public Customer findById(UUID id) {
-        return repository.findByIdAndActiveTrue(id).orElseThrow(() -> new CustomerNotFoundException(id));
+        return repository.findByIdAndStatusNot(id, CustomerStatus.CANCELED).orElseThrow(() -> new CustomerNotFoundException(id));
     }
 
     @Override
@@ -92,6 +97,6 @@ public class CustomerService implements CrudService<Customer> {
     }
 
     private String encryptPassword(String password) {
-        return Hash.convertToMd5(password);
+        return encoder.encode(password);
     }
 }

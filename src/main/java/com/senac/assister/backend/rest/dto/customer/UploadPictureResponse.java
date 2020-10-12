@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 public class UploadPictureResponse {
 
-    private UUID customer_id;
+    private UUID customerId;
 
-    private String url;
+    private String profilePictureUrl;
 }

@@ -36,18 +36,14 @@ public class CreditCard {
     @Column(name = "token")
     private String token;
 
-    @JsonInclude()
-    @Transient
-    private String creditCardNumber;
-
     @OneToMany(mappedBy = "creditCard")
     private List<Charge> charges = new ArrayList<>();
 
-    @Column(name = "last_four_digits")
-    private String lastFourDigits;
+    @Column(name = "holder_number")
+    private String holderNumber;
 
-    @Column(name = "credit_card_name")
-    private String creditCardName;
+    @Column(name = "holder_name")
+    private String holderName;
 
     @Column(name = "expiration_date")
     private String expirationDate;
@@ -66,19 +62,18 @@ public class CreditCard {
     @Generated(GenerationTime.ALWAYS)
     @Column(name = "updated_at")
     private Instant updatedAt;
-
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreditCard that = (CreditCard) o;
         return Objects.equals(token, that.token) &&
-                Objects.equals(lastFourDigits, that.lastFourDigits);
+                Objects.equals(holderNumber, that.holderNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(token, lastFourDigits);
+        return Objects.hash(token, holderNumber);
     }
 }

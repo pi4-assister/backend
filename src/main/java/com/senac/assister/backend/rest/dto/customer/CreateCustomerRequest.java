@@ -1,18 +1,15 @@
 package com.senac.assister.backend.rest.dto.customer;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import org.springframework.web.multipart.MultipartFile;
+import org.modelmapper.PropertyMap;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
@@ -33,9 +30,6 @@ public class CreateCustomerRequest {
     @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters")
     private String personIdentifier;
 
-    @NotNull(message = "isLegalPerson field must be sent.")
-    private boolean isLegalPerson;
-
     @Size(min = 1, max = 500, message = "bio must be between 1 and 500 characters")
     private String bio;
 
@@ -46,7 +40,7 @@ public class CreateCustomerRequest {
     @NotNull(message = "customerType field must be sent.")
     private CustomerType customerType;
 
-    private String landlineNumber;
+    private String emergencyNumber;
 
     @NotNull(message = "email field must be sent.")
     @Email(message = "email should be a valid e-mail.")

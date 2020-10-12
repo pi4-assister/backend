@@ -37,6 +37,7 @@ public class EmailService {
 
         String htmlFile = getHtmlFile(subjects);
         String htmlContent = decodeHtml(htmlFile);
+        // remove \/ and make especific methods with switch to replace certain things
 
         htmlContent = htmlContent.replace("#customer_name", customer.getFullName());
 
