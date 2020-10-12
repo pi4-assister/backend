@@ -82,7 +82,6 @@ class CustomerServiceTest {
         verify(customerRepository, never()).save(customer);
     }
 
-
     private Customer createCustomer() {
         return new Customer(
                 UUID.randomUUID(),

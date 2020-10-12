@@ -33,10 +33,8 @@ public class CreditCardService implements CrudService<CreditCard> {
         source.setUpdatedAt(Instant.now());
 
         source.setToken(paymentService.tokenization(source));
-//        source.setHolderNumber(source.getCreditCardNumber()
-//                .substring(source.getCreditCardNumber().length() - 4));
-//
-//        source.setCreditCardNumber("");
+        source.setHolderNumber(source.getHolderNumber()
+                .substring(source.getHolderNumber().length() - 4));
 
         return repository.save(source);
     }
