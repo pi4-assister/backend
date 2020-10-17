@@ -34,13 +34,6 @@ public class UpdateCustomerRequest {
     @Size(min = 1, max = 255, message = "fullName must be between 1 and 255 characters")
     private String fullName;
 
-    @NotNull
-    @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters")
-    private String personIdentifier;
-
-    @NotNull(message = "isLegalPerson field must be sent.")
-    private boolean isLegalPerson;
-
     @Size(min = 1, max = 500, message = "bio must be between 1 and 500 characters")
     private String bio;
 
@@ -48,15 +41,8 @@ public class UpdateCustomerRequest {
     @Size(min = 1, max = 45, message = "phoneNumber must be between 1 and 45 characters")
     private String phoneNumber;
 
-    @NotNull(message = "customerType field must be sent.")
-    private CustomerType customerType;
-
+    @Size(min = 1, max = 45, message = "emergencyNumber must be between 1 and 45 characters")
     private String emergencyNumber;
-
-    @NotNull(message = "email field must be sent.")
-    @Email(message = "email should be a valid e-mail.")
-    @Size(min = 1, max = 255, message = "email must be between 1 and 255 characters")
-    private String email;
 
     @NotNull(message = "password field must be sent.")
     @Size(min = 1, max = 255, message = "password must be between 1 and 255 characters")

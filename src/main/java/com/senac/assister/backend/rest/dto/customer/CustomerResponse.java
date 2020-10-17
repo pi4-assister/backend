@@ -49,10 +49,6 @@ public class CustomerResponse {
 
     private String zipCode;
 
-    private Instant createdAt;
-
-    private Instant updatedAt;
-
     public static CustomerResponse convertToDto(Customer customer) {
         return mapper.map(customer, CustomerResponse.class);
     }

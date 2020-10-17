@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
@@ -27,6 +28,7 @@ public class CreateCustomerRequest {
     private String fullName;
 
     @NotNull
+    @CPF
     @Size(min = 1, max = 45, message = "personIdentifier must be between 1 and 45 characters")
     private String personIdentifier;
 
@@ -40,6 +42,7 @@ public class CreateCustomerRequest {
     @NotNull(message = "customerType field must be sent.")
     private CustomerType customerType;
 
+    @Size(min = 1, max = 45, message = "emergencyNumber must be between 1 and 45 characters")
     private String emergencyNumber;
 
     @NotNull(message = "email field must be sent.")
