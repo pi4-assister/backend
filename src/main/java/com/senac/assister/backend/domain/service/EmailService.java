@@ -3,6 +3,7 @@ package com.senac.assister.backend.domain.service;
 import com.senac.assister.AssisterApplication;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
+import com.senac.assister.backend.domain.security.Hash;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,9 +38,8 @@ public class EmailService {
 
         String htmlFile = getHtmlFile(subjects);
         String htmlContent = decodeHtml(htmlFile);
-        // remove \/ and make especific methods with switch to replace certain things
 
-        htmlContent = htmlContent.replace("#customer_name", customer.getFullName());
+        htmlContent = replaceEmailFlags(customer, htmlContent, subjects);
 
         try {
             helper.setFrom(ASSISTER_EMAIL, ASSISTER_NAME);
@@ -49,6 +49,17 @@ public class EmailService {
 
             mailSender.send(mail);
         } catch (Exception ignored) {
+        }
+    }
+
+    private String replaceEmailFlags(Customer customer, String htmlContent, EmailSubjects subjects) {
+        switch (subjects) {
+            case CREATE_USER:
+                return htmlContent.replace("#customer_name", customer.getFullName());
+            case FORGOT_PASSWORD:
+                return htmlContent.replace("#forgot_code#", "code-here");
+            default:
+                return "";
         }
     }
 
@@ -66,7 +77,20 @@ public class EmailService {
         switch (subjects) {
             case CREATE_USER:
                 return path + "/hiring.html";
+            case FORGOT_PASSWORD:
+                return path + "/forgot_password.html";
         }
-        return null;
+        return "";
     }
 }
+
+
+/*
+hiring
+#customer_name#
+
+
+FORGOT PASSWORD
+#forgot_code# -> first 6 letters of md5 of customre e-mail
+
+ */

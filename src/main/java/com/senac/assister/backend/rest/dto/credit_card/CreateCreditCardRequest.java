@@ -23,11 +23,11 @@ public class CreateCreditCardRequest {
     private UUID customerId;
 
     @NotNull(message = "holderNumber field must be sent.")
-    @Size(min = 16, max = 20, message = "holderNumber must be between 1 and 20 characters")
+    @Size(min = 16, max = 20, message = "holderNumber must be between 16 and 20 characters")
     private String holderNumber;
 
     @NotNull(message = "holderName field must be sent.")
-    @Size(min = 1, max = 255, message = "holderName must be between 1 and 255 characters")
+    @Size(min = 2, max = 26, message = "holderName must be between 12 and 26 characters")
     private String holderName;
 
     @NotNull(message = "expirationDate field must be sent.")
