@@ -95,6 +95,7 @@ class CustomerServiceTest {
                 CustomerStatus.REGISTERED,
                 "email@gmail.com",
                 "fd4c2b1441c3319eaa14e1d63f64336e",
+                "123456",
                 Instant.now(),
                 "address",
                 "city",

@@ -44,10 +44,6 @@ public class UpdateCustomerRequest {
     @Size(min = 1, max = 45, message = "emergencyNumber must be between 1 and 45 characters")
     private String emergencyNumber;
 
-    @NotNull(message = "password field must be sent.")
-    @Size(min = 1, max = 255, message = "password must be between 1 and 255 characters")
-    private String password;
-
     @NotNull(message = "birthdate field must be sent.")
     private Instant birthdate;
 

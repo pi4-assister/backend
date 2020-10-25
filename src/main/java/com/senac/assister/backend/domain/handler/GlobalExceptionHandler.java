@@ -3,6 +3,7 @@ package com.senac.assister.backend.domain.handler;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
 import com.senac.assister.backend.domain.exception.InvalidImageExtensionException;
+import com.senac.assister.backend.domain.exception.WrongPasswordCodeException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidImageExtensionException.class)
     public void handleInvalidImageExtensionException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @ExceptionHandler(WrongPasswordCodeException.class)
+    public void handleWrongPasswordCodeException(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.UNAUTHORIZED.value());
     }
 
     @ExceptionHandler(CustomerAlreadyFoundException.class)

@@ -57,7 +57,7 @@ public class EmailService {
             case CREATE_USER:
                 return htmlContent.replace("#customer_name", customer.getFullName());
             case FORGOT_PASSWORD:
-                return htmlContent.replace("#forgot_code#", "code-here");
+                return htmlContent.replace("#forgot_code#", customer.getForgetPasswordCode());
             default:
                 return "";
         }

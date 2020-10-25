@@ -99,6 +99,9 @@ public class Customer {
     @Column(name = "encrypted_password")
     private String password;
 
+    @Column(name = "forget_password_code")
+    private String forgetPasswordCode;
+
     @Column(name = "birthdate")
     private Instant birthdate;
 
