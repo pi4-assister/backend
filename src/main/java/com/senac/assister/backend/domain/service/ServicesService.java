@@ -2,6 +2,8 @@ package com.senac.assister.backend.domain.service;
 
 
 import com.senac.assister.backend.domain.entity.Service;
+import com.senac.assister.backend.domain.enumeration.ServiceStatus;
+import com.senac.assister.backend.domain.exception.ServiceNotFoundException;
 import com.senac.assister.backend.domain.repository.ServiceRepository;
 
 import java.util.List;
@@ -20,26 +22,28 @@ public class ServicesService implements CrudService<Service> {
 
     @Override
     public Service save(Service source) {
-        return null;
+        return repository.save(source);
     }
 
     @Override
     public Service delete(UUID id) {
-        return null;
+        Service service = repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
+        service.setServiceStatus(ServiceStatus.CANCELED);
+        return repository.save(service);
     }
 
     @Override
     public Service update(Service source) {
-        return null;
+        return repository.save(source);
     }
 
     @Override
     public Service findById(UUID id) {
-        return null;
+        return repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
     }
 
     @Override
     public List<Service> findAll() {
-        return null;
+        return repository.findAll();
     }
 }
