@@ -121,4 +121,22 @@ public class CustomerController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @ApiOperation("Get password code")
+    @PostMapping("/{id}/password-code")
+    public ResponseEntity<ChangePasswordCustomerResponse> getPasswordCode(@PathVariable UUID id) {
+        String code = customerService.generatePasswordCode(id);
+
+        ChangePasswordCustomerResponse response = new ChangePasswordCustomerResponse(code);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ApiOperation("Change password")
+    @PatchMapping("/{id}/password")
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordCustomerRequest request, @PathVariable UUID id) {
+        customerService.changePassword(id, request.getPassword(), request.getCode());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

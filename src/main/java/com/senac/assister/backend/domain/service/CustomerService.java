@@ -6,6 +6,7 @@ import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
 import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
+import com.senac.assister.backend.domain.exception.WrongPasswordCodeException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.security.AssisterPasswordEncoder;
 import com.senac.assister.backend.domain.security.Hash;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,10 +65,6 @@ public class CustomerService implements CrudService<Customer> {
     public Customer update(Customer customer) {
         Customer customerFound = findById(customer.getId());
 
-        if (!customerFound.getPassword().equals(customer.getPassword())) {
-            customer.setPassword(encryptPassword(customer.getPassword()));
-        }
-
         return repository.save(customer);
     }
 
@@ -94,6 +92,31 @@ public class CustomerService implements CrudService<Customer> {
         repository.save(customer);
 
         return customer.getPhotoUrl();
+    }
+
+    public void changePassword(UUID id, String newPassword, String code) {
+        Customer customer = findById(id);
+
+        if (!customer.getForgetPasswordCode().equals(code)) {
+            throw new WrongPasswordCodeException();
+        }
+
+        customer.setPassword(encryptPassword(newPassword));
+        customer.setForgetPasswordCode("");
+
+        repository.save(customer);
+    }
+
+    public String generatePasswordCode(UUID id) {
+        Customer customer = findById(id);
+
+        String passwordCode = Hash.convertToMd5(customer.getPassword() + Instant.now());
+        passwordCode = passwordCode.substring(0, 6).toUpperCase();
+
+        customer.setForgetPasswordCode(passwordCode);
+        repository.save(customer);
+
+        return passwordCode;
     }
 
     private String encryptPassword(String password) {

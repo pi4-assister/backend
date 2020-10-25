@@ -23,7 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Customer {
 
-    public Customer(String photoUrl, String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
+    public Customer(String photoUrl, String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
         this.photoUrl = photoUrl;
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
@@ -34,6 +34,7 @@ public class Customer {
         this.status = status;
         this.email = email;
         this.password = password;
+        this.forgetPasswordCode = forgetPasswordCode;
         this.birthdate = birthdate;
         this.address = address;
         this.city = city;
@@ -43,7 +44,7 @@ public class Customer {
         this.updatedAt = updatedAt;
     }
 
-    public Customer(String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, String password, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
+    public Customer(String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
         this.bio = bio;
@@ -53,6 +54,7 @@ public class Customer {
         this.status = status;
         this.email = email;
         this.password = password;
+        this.forgetPasswordCode = forgetPasswordCode;
         this.birthdate = birthdate;
         this.address = address;
         this.city = city;
@@ -98,6 +100,9 @@ public class Customer {
 
     @Column(name = "encrypted_password")
     private String password;
+
+    @Column(name = "forget_password_code")
+    private String forgetPasswordCode;
 
     @Column(name = "birthdate")
     private Instant birthdate;
