@@ -12,6 +12,8 @@ import org.hibernate.annotations.GenerationTime;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.UUID;
@@ -24,7 +26,9 @@ public class CreateRateRequest {
 
     private static ModelMapper mapper = new ModelMapper();
 
-    @NotNull(message = "nedd score associated with service")
+    @NotNull(message = "score must be sent.")
+    @Min(value = 0, message = "score must be greater than 0")
+    @Max(value = 5, message = "score must be lower than 5")
     private double score;
 
     private String description;

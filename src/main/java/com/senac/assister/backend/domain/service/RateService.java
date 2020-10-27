@@ -25,7 +25,9 @@ public class RateService implements CrudService<Rate> {
     @Override
     public Rate delete(UUID id) {
         Rate rate = repository.findById(id).orElseThrow(() -> new RateNotFoundException(id));
+
         rate.setActive(false);
+
         return repository.save(rate);
     }
 
