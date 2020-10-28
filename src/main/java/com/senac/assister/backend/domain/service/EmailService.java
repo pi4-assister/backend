@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +49,9 @@ public class EmailService {
             helper.setText(htmlContent, true);
 
             mailSender.send(mail);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            System.out.println("E-mail exception debugger");
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
 
