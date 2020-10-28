@@ -47,7 +47,7 @@ public class ServiceController {
         return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/rate")
+    @PostMapping("/{id}/rate")
     @ApiOperation("Create rate in service")
     public ResponseEntity<ServiceResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
         Service service = servicesService.findById(id);
