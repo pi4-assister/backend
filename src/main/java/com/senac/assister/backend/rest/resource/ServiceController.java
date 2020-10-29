@@ -49,13 +49,13 @@ public class ServiceController {
 
     @PostMapping("/{id}/rate")
     @ApiOperation("Create rate in service")
-    public ResponseEntity<ServiceResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
+    public ResponseEntity<UUID> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
         Service service = servicesService.findById(id);
         Rate rate =  CreateRateRequest.convertToEntity(rateRequest);
         rate = rateService.save(rate);
         service.setRate(rate);
         servicesService.update(service);
-        return new ResponseEntity<>(ServiceResponse.convertToResponse(service), HttpStatus.OK);
+        return new ResponseEntity<UUID>(rate.getId(), HttpStatus.OK);
     }
 
 }
