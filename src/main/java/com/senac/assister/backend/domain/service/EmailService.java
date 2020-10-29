@@ -51,6 +51,8 @@ public class EmailService {
             mailSender.send(mail);
         } catch (Exception e) {
             System.out.println("E-mail exception debugger");
+            System.out.println(e.getMessage());
+            System.out.println(e.getLocalizedMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
