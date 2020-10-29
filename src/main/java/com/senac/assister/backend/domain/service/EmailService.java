@@ -58,7 +58,7 @@ public class EmailService {
     private String replaceEmailFlags(Customer customer, String htmlContent, EmailSubjects subjects) {
         switch (subjects) {
             case CREATE_USER:
-                return htmlContent.replace("#customer_name", customer.getFullName());
+                return htmlContent.replace("#customer_name#", customer.getFullName());
             case FORGOT_PASSWORD:
                 return htmlContent.replace("#forgot_code#", customer.getForgetPasswordCode());
             default:
