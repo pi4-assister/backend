@@ -3,14 +3,13 @@ package com.senac.assister.backend.rest.resource;
 import com.senac.assister.backend.domain.entity.Rate;
 import com.senac.assister.backend.domain.service.RateService;
 import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
-import com.senac.assister.backend.rest.dto.rate.CreateRateResponse;
+import com.senac.assister.backend.rest.dto.rate.RateResponse;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,29 +27,29 @@ public class RateController {
 
     @GetMapping("/{id}")
     @ApiOperation("Get rate per id")
-    public ResponseEntity<CreateRateResponse> getRateById(@PathVariable UUID id) {
+    public ResponseEntity<RateResponse> getRateById(@PathVariable UUID id) {
         Rate rate = rateService.findById(id);
-        CreateRateResponse rateResponse = CreateRateResponse.convertToResponse(rate);
-        return new ResponseEntity<CreateRateResponse>(rateResponse, HttpStatus.OK);
+        RateResponse rateResponse = RateResponse.convertToResponse(rate);
+        return new ResponseEntity<RateResponse>(rateResponse, HttpStatus.OK);
     }
 
     @GetMapping
     @ApiOperation("Get list whith rates")
-    public ResponseEntity<List<CreateRateResponse>> getAllRates() {
-        List<CreateRateResponse> list = rateService.findAll()
+    public ResponseEntity<List<RateResponse>> getAllRates() {
+        List<RateResponse> list = rateService.findAll()
                 .stream()
-                .map(CreateRateResponse::convertToResponse)
+                .map(RateResponse::convertToResponse)
                 .collect(Collectors.toList());
-        return new ResponseEntity<List<CreateRateResponse>>(list, HttpStatus.OK);
+        return new ResponseEntity<List<RateResponse>>(list, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @ApiOperation("Update rate")
-    public ResponseEntity<CreateRateResponse> updateRate(@PathVariable UUID id, @Valid  @RequestBody CreateRateRequest request) {
+    public ResponseEntity<RateResponse> updateRate(@PathVariable UUID id, @Valid  @RequestBody CreateRateRequest request) {
         Rate rate = CreateRateRequest.convertToEntity(request);
         rate.setId(id);
         rate = rateService.update(rate);
-        return new ResponseEntity<CreateRateResponse>(CreateRateResponse.convertToResponse(rate), HttpStatus.OK);
+        return new ResponseEntity<RateResponse>(RateResponse.convertToResponse(rate), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
