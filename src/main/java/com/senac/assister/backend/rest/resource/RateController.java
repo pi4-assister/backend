@@ -6,6 +6,7 @@ import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
 import com.senac.assister.backend.rest.dto.rate.RateResponse;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class RateController {
 
     private final RateService rateService;
 
-    public RateController(RateService rateService){
+    public RateController(RateService rateService) {
         this.rateService = rateService;
     }
 
@@ -58,5 +59,4 @@ public class RateController {
         rateService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

@@ -1,6 +1,5 @@
 package com.senac.assister.backend.domain.service;
 
-import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
@@ -10,8 +9,6 @@ import com.senac.assister.backend.domain.exception.WrongPasswordCodeException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.security.AssisterPasswordEncoder;
 import com.senac.assister.backend.domain.security.Hash;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,8 +104,9 @@ public class CustomerService implements CrudService<Customer> {
         repository.save(customer);
     }
 
-    public String generatePasswordCode(UUID id) {
-        Customer customer = findById(id);
+    public String generatePasswordCode(String email) {
+        Customer customer = repository.findByEmailAndStatusNot(email, CustomerStatus.CANCELED)
+                .orElseThrow(() -> new CustomerNotFoundException());
 
         String passwordCode = Hash.convertToMd5(customer.getPassword() + Instant.now());
         passwordCode = passwordCode.substring(0, 6).toUpperCase();
