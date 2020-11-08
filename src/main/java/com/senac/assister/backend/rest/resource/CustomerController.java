@@ -119,12 +119,10 @@ public class CustomerController {
 
     @ApiOperation("Get password code")
     @PostMapping("/password-code")
-    public ResponseEntity<GetPasswordCodeResponse> getPasswordCode(@RequestBody GetPasswordCodeRequest request) {
-        String code = customerService.generatePasswordCode(request.getEmail());
+    public ResponseEntity<Void> getPasswordCode(@RequestBody GetPasswordCodeRequest request) {
+        customerService.generatePasswordCode(request.getEmail());
 
-        GetPasswordCodeResponse response = new GetPasswordCodeResponse(code);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation("Change password")

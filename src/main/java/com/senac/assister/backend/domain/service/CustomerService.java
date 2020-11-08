@@ -104,9 +104,9 @@ public class CustomerService implements CrudService<Customer> {
         repository.save(customer);
     }
 
-    public String generatePasswordCode(String email) {
+    public void generatePasswordCode(String email) {
         Customer customer = repository.findByEmailAndStatusNot(email, CustomerStatus.CANCELED)
-                .orElseThrow(() -> new CustomerNotFoundException());
+                .orElseThrow(CustomerNotFoundException::new);
 
         String passwordCode = Hash.convertToMd5(customer.getPassword() + Instant.now());
         passwordCode = passwordCode.substring(0, 6).toUpperCase();
@@ -114,7 +114,7 @@ public class CustomerService implements CrudService<Customer> {
         customer.setForgetPasswordCode(passwordCode);
         repository.save(customer);
 
-        return passwordCode;
+        emailService.sendHtmlEmail(customer, EmailSubjects.FORGOT_PASSWORD);
     }
 
     private String encryptPassword(String password) {
