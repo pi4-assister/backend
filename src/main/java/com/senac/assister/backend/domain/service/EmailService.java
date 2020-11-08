@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +50,8 @@ public class EmailService {
 
             mailSender.send(mail);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -84,14 +86,3 @@ public class EmailService {
         return "";
     }
 }
-
-
-/*
-hiring
-#customer_name#
-
-
-FORGOT PASSWORD
-#forgot_code# -> first 6 letters of md5 of customre e-mail
-
- */
