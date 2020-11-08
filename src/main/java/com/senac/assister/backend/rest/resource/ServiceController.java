@@ -6,7 +6,6 @@ import com.senac.assister.backend.domain.service.RateService;
 import com.senac.assister.backend.domain.service.ServicesService;
 import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
 import com.senac.assister.backend.rest.dto.rate.CreateRateResponse;
-import com.senac.assister.backend.rest.dto.rate.RateResponse;
 import com.senac.assister.backend.rest.dto.service.ServiceRequest;
 import com.senac.assister.backend.rest.dto.service.ServiceResponse;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.UUID;
 
 @RestController
@@ -57,7 +55,7 @@ public class ServiceController {
         rate = rateService.save(rate);
         service.setRate(rate);
         servicesService.update(service);
-        return new ResponseEntity<CreateRateResponse>(CreateRateResponse.convertToResponse(rate), HttpStatus.OK);
+        return new ResponseEntity<CreateRateResponse>(CreateRateResponse.convertToDto(rate), HttpStatus.OK);
     }
 
 }

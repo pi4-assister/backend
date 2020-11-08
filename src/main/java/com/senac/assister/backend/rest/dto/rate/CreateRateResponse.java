@@ -24,7 +24,7 @@ public class CreateRateResponse {
 
     private Instant createdAt;
 
-    public static CreateRateResponse convertToResponse(Rate rate) {
+    public static CreateRateResponse convertToDto(Rate rate) {
         return mapper.map(rate, CreateRateResponse.class);
     }
 }
