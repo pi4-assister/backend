@@ -117,7 +117,7 @@ public class CustomerController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @ApiOperation("Get password code")
+    @ApiOperation("Generate password code and send to customer e-mail.")
     @PostMapping("/password-code")
     public ResponseEntity<Void> getPasswordCode(@RequestBody GetPasswordCodeRequest request) {
         customerService.generatePasswordCode(request.getEmail());
