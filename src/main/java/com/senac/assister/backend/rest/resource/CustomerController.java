@@ -2,20 +2,15 @@ package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
-import com.senac.assister.backend.domain.security.MyUserDetails;
-import com.senac.assister.backend.domain.security.UserDetailsServiceImpl;
 import com.senac.assister.backend.domain.service.CreditCardService;
 import com.senac.assister.backend.domain.service.CustomerService;
-import com.senac.assister.backend.domain.service.ImageServiceImpl;
 import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
 import com.senac.assister.backend.rest.dto.customer.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -123,18 +118,18 @@ public class CustomerController {
     }
 
     @ApiOperation("Get password code")
-    @PostMapping("/{id}/password-code")
-    public ResponseEntity<ChangePasswordCustomerResponse> getPasswordCode(@PathVariable UUID id) {
-        String code = customerService.generatePasswordCode(id);
+    @PostMapping("/password-code")
+    public ResponseEntity<GetPasswordCodeResponse> getPasswordCode(@RequestBody GetPasswordCodeRequest request) {
+        String code = customerService.generatePasswordCode(request.getEmail());
 
-        ChangePasswordCustomerResponse response = new ChangePasswordCustomerResponse(code);
+        GetPasswordCodeResponse response = new GetPasswordCodeResponse(code);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ApiOperation("Change password")
     @PatchMapping("/{id}/password")
-    public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordCustomerRequest request, @PathVariable UUID id) {
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request, @PathVariable UUID id) {
         customerService.changePassword(id, request.getPassword(), request.getCode());
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

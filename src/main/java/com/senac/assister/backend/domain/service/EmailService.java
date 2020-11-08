@@ -3,12 +3,12 @@ package com.senac.assister.backend.domain.service;
 import com.senac.assister.AssisterApplication;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
-import com.senac.assister.backend.domain.security.Hash;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
@@ -86,14 +86,3 @@ public class EmailService {
         return "";
     }
 }
-
-
-/*
-hiring
-#customer_name#
-
-
-FORGOT PASSWORD
-#forgot_code# -> first 6 letters of md5 of customre e-mail
-
- */

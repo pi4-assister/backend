@@ -1,6 +1,7 @@
 package com.senac.assister.backend.rest.resource;
 
 import com.senac.assister.backend.domain.service.RateService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +15,7 @@ public class RateController {
 
     private final RateService rateService;
 
-    public RateController(RateService rateService){
+    public RateController(RateService rateService) {
         this.rateService = rateService;
     }
-
-
 }
