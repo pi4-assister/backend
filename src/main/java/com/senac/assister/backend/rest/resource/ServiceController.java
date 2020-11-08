@@ -5,6 +5,8 @@ import com.senac.assister.backend.domain.entity.Service;
 import com.senac.assister.backend.domain.service.RateService;
 import com.senac.assister.backend.domain.service.ServicesService;
 import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
+import com.senac.assister.backend.rest.dto.rate.CreateRateResponse;
+import com.senac.assister.backend.rest.dto.rate.RateResponse;
 import com.senac.assister.backend.rest.dto.service.ServiceRequest;
 import com.senac.assister.backend.rest.dto.service.ServiceResponse;
 import io.swagger.annotations.ApiOperation;
@@ -47,15 +49,15 @@ public class ServiceController {
         return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/rate")
+    @PostMapping("/{id}/rate")
     @ApiOperation("Create rate in service")
-    public ResponseEntity<ServiceResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
+    public ResponseEntity<CreateRateResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
         Service service = servicesService.findById(id);
         Rate rate =  CreateRateRequest.convertToEntity(rateRequest);
         rate = rateService.save(rate);
         service.setRate(rate);
         servicesService.update(service);
-        return new ResponseEntity<>(ServiceResponse.convertToResponse(service), HttpStatus.OK);
+        return new ResponseEntity<CreateRateResponse>(CreateRateResponse.convertToResponse(rate), HttpStatus.OK);
     }
 
 }

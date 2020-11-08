@@ -6,25 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.time.Instant;
+
 import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreateRateResponse {
+public class RateResponse {
 
     private static ModelMapper mapper = new ModelMapper();
 
     private UUID id;
 
-    private Instant createdAt;
+    private double score;
 
-    public static CreateRateResponse convertToResponse(Rate rate) {
-        return mapper.map(rate, CreateRateResponse.class);
+    private String description;
+
+    public static RateResponse convertToResponse(Rate rate) {
+        return mapper.map(rate, RateResponse.class);
     }
 }
