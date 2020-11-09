@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @ApiOperation("Authorize user session")
-    @PostMapping("/session/")
+    @PostMapping("/session")
     public ResponseEntity<CustomerResponse> login() {
-        // Spring security already authenticates the user and SecuriryContextHolder gets the logged user on session.
+        // Spring security already authenticates the user and SecurityContextHolder gets the logged user on session.
         Customer customer = ((MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).loggedCustomer;
 
         CustomerResponse response = CustomerResponse.convertToDto(customer);
