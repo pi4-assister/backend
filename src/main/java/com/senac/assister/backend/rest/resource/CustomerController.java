@@ -125,7 +125,7 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation("Change password")
+    @ApiOperation("Change password with password code sent.")
     @PatchMapping("/{id}/password")
     public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request, @PathVariable UUID id) {
         customerService.changePassword(id, request.getPassword(), request.getCode());

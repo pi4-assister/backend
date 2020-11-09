@@ -33,8 +33,11 @@ public class ServiceController {
     @ApiOperation("Create service")
     public ResponseEntity<ServiceResponse> createService(@Valid @RequestBody ServiceRequest serviceRequest) {
         Service service = ServiceRequest.convertToEntity(serviceRequest);
+
         service = servicesService.save(service);
+
         ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
+
         return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
     }
 
@@ -42,8 +45,11 @@ public class ServiceController {
     @ApiOperation("Update service")
     public ResponseEntity<ServiceResponse> updateService(@Valid @RequestBody ServiceRequest serviceRequest){
         Service service = ServiceRequest.convertToEntity(serviceRequest);
+
         service = servicesService.update(service);
+
         ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
+
         return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
     }
 
@@ -51,10 +57,13 @@ public class ServiceController {
     @ApiOperation("Create rate in service")
     public ResponseEntity<CreateRateResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
         Service service = servicesService.findById(id);
+
         Rate rate =  CreateRateRequest.convertToEntity(rateRequest);
         rate = rateService.save(rate);
         service.setRate(rate);
+
         servicesService.update(service);
+
         return new ResponseEntity<CreateRateResponse>(CreateRateResponse.convertToDto(rate), HttpStatus.OK);
     }
 
