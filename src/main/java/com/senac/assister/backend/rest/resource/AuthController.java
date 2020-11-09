@@ -7,10 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ResponseBody
@@ -18,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @ApiOperation("Authorize user session")
-    @GetMapping("/session/")
+    @PostMapping("/session/")
     public ResponseEntity<CustomerResponse> login() {
         // Spring security already authenticates the user and SecuriryContextHolder gets the logged user on session.
         Customer customer = ((MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).loggedCustomer;
