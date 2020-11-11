@@ -1,6 +1,8 @@
 package com.senac.assister.backend.domain.service;
 
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.entity.CustomerSpecialNeeds;
+import com.senac.assister.backend.domain.entity.SpecialNeedType;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
@@ -24,13 +26,15 @@ public class CustomerService implements CrudService<Customer> {
     private final CustomerRepository repository;
     private final ImageServiceImpl imageService;
     private final EmailService emailService;
+    private final SpecialNeedTypeService specialNeedTypeService;
 
     private final PasswordEncoder encoder = AssisterPasswordEncoder.encoder();
 
-    public CustomerService(CustomerRepository repository, ImageServiceImpl imageService, EmailService emailService) {
+    public CustomerService(CustomerRepository repository, ImageServiceImpl imageService, EmailService emailService, SpecialNeedTypeService specialNeedTypeService) {
         this.repository = repository;
         this.imageService = imageService;
         this.emailService = emailService;
+        this.specialNeedTypeService = specialNeedTypeService;
     }
 
     @Override
@@ -42,6 +46,15 @@ public class CustomerService implements CrudService<Customer> {
         }
 
         customer.setPassword(encryptPassword(customer.getPassword()));
+
+        for (CustomerSpecialNeeds customerSpecialNeeds :
+                customer.getCustomerSpecialNeeds()) {
+            SpecialNeedType specialNeedType = specialNeedTypeService.findByName(customerSpecialNeeds.getSpecialNeedType().getName());
+            customerSpecialNeeds.setSpecialNeedType(specialNeedType);
+
+            customerSpecialNeeds.setCustomer(customer);
+        }
+
         customer.setStatus(CustomerStatus.REGISTERED);
 
         emailService.sendHtmlEmail(customer, EmailSubjects.CREATE_USER);

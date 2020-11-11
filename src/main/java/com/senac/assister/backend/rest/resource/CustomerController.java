@@ -4,6 +4,7 @@ import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.service.CreditCardService;
 import com.senac.assister.backend.domain.service.CustomerService;
+import com.senac.assister.backend.domain.service.SpecialNeedTypeService;
 import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
 import com.senac.assister.backend.rest.dto.customer.*;
 import io.swagger.annotations.ApiOperation;

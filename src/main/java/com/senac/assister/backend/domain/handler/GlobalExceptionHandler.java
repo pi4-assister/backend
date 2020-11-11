@@ -1,9 +1,6 @@
 package com.senac.assister.backend.domain.handler;
 
-import com.senac.assister.backend.domain.exception.CustomerAlreadyFoundException;
-import com.senac.assister.backend.domain.exception.CustomerNotFoundException;
-import com.senac.assister.backend.domain.exception.InvalidImageExtensionException;
-import com.senac.assister.backend.domain.exception.WrongPasswordCodeException;
+import com.senac.assister.backend.domain.exception.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +22,11 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(SpecialNeedTypeNotFoundException.class)
+    public void handleSpecialNeedTypeNotFoundException(HttpServletResponse response) throws IOException {
+        response.sendError(HttpStatus.NOT_FOUND.value());
+    }
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public void handleCustomerNotFoundException(HttpServletResponse response) throws IOException {

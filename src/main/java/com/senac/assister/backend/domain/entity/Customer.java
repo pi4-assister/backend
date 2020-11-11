@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -97,6 +98,10 @@ public class Customer {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "customer_id")
+    private List<CustomerSpecialNeeds> customerSpecialNeeds;
 
     @Column(name = "encrypted_password")
     private String password;

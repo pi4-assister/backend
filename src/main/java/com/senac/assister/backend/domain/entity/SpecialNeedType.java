@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "special_need_type")
+@Table(name = "special_needs_type")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,6 +29,9 @@ public class SpecialNeedType {
 
     @Column(name = "active")
     private boolean active;
+
+    @Column(name = "price")
+    private double price;
 
     @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")

@@ -24,11 +24,11 @@ public class CustomerSpecialNeeds {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "special_needs_type_id")
     private SpecialNeedType specialNeedType;
 
