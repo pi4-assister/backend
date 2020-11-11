@@ -99,8 +99,7 @@ public class Customer {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "customer_id")
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private List<CustomerSpecialNeeds> customerSpecialNeeds;
 
     @Column(name = "encrypted_password")
