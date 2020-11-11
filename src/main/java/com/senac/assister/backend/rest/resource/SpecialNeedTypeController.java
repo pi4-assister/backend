@@ -69,7 +69,7 @@ public class SpecialNeedTypeController {
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete special need type")
-    public ResponseEntity<Void> deleteRate(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteSpecialNeedType(@PathVariable UUID id) {
 
         specialNeedTypeService.delete(id);
 
