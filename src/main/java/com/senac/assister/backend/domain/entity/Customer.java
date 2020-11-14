@@ -101,7 +101,7 @@ public class Customer {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<CustomerSpecialNeeds> customerSpecialNeeds;
 
     @Column(name = "encrypted_password")
