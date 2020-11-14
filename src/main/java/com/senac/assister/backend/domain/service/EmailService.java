@@ -61,6 +61,8 @@ public class EmailService {
                 return htmlContent.replace("#customer_name#", customer.getFullName());
             case FORGOT_PASSWORD:
                 return htmlContent.replace("#forgot_code#", customer.getForgetPasswordCode());
+            case SERVICE_IN_PROGRESS:
+                return htmlContent.replace("#customer_name#", customer.getPassword());
             default:
                 return "";
         }
@@ -82,6 +84,8 @@ public class EmailService {
                 return path + "/hiring.html";
             case FORGOT_PASSWORD:
                 return path + "/forgot_password.html";
+            case SERVICE_IN_PROGRESS:
+                return path + "/service_in_progress.html";
         }
         return "";
     }
