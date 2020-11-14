@@ -1,6 +1,7 @@
 package com.senac.assister.backend.rest.dto.customer;
 
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.entity.CustomerSpecialNeeds;
 import com.senac.assister.backend.domain.enumeration.CustomerStatus;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,6 +50,8 @@ public class CustomerResponse {
     private String state;
 
     private String zipCode;
+
+    private List<CustomerSpecialNeeds> customerSpecialNeedsList;
 
     public static CustomerResponse convertToDto(Customer customer) {
         return mapper.map(customer, CustomerResponse.class);

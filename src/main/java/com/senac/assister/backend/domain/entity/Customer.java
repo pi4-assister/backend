@@ -12,6 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Customer {
 
-    public Customer(String photoUrl, String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
+    public Customer(String photoUrl, String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, List<CustomerSpecialNeeds> customerSpecialNeeds, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
         this.photoUrl = photoUrl;
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
@@ -33,6 +34,7 @@ public class Customer {
         this.customerType = customerType;
         this.status = status;
         this.email = email;
+        this.customerSpecialNeeds = customerSpecialNeeds;
         this.password = password;
         this.forgetPasswordCode = forgetPasswordCode;
         this.birthdate = birthdate;
@@ -44,7 +46,7 @@ public class Customer {
         this.updatedAt = updatedAt;
     }
 
-    public Customer(String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
+    public Customer(String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, List<CustomerSpecialNeeds> customerSpecialNeeds, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {
         this.fullName = fullName;
         this.personIdentifier = personIdentifier;
         this.bio = bio;
@@ -53,6 +55,7 @@ public class Customer {
         this.customerType = customerType;
         this.status = status;
         this.email = email;
+        this.customerSpecialNeeds = customerSpecialNeeds;
         this.password = password;
         this.forgetPasswordCode = forgetPasswordCode;
         this.birthdate = birthdate;
@@ -97,6 +100,9 @@ public class Customer {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    private List<CustomerSpecialNeeds> customerSpecialNeeds;
 
     @Column(name = "encrypted_password")
     private String password;

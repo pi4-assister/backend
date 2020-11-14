@@ -1,6 +1,7 @@
 package com.senac.assister.backend.rest.dto.customer;
 
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.entity.SpecialNeedType;
 import com.senac.assister.backend.domain.enumeration.CustomerType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -72,6 +74,8 @@ public class CreateCustomerRequest {
     @NotNull(message = "zipCode field must be sent.")
     @Size(min = 1, max = 45, message = "zipCode must be between 1 and 255 characters")
     private String zipCode;
+
+    private List<SpecialNeedType> customerSpecialNeeds;
 
     public static Customer convertToEntity(CreateCustomerRequest request) {
         return mapper.map(request, Customer.class);

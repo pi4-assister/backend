@@ -1,5 +1,6 @@
 package com.senac.assister.backend.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,22 +25,26 @@ public class CustomerSpecialNeeds {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private Customer customer;
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "special_needs_type_id")
     private SpecialNeedType specialNeedType;
 
     @Column(name = "active")
+    @JsonIgnore
     private boolean active;
 
     @Generated(GenerationTime.INSERT)
     @Column(name = "created_at")
+    @JsonIgnore
     private Instant createdAt;
 
     @Generated(GenerationTime.ALWAYS)
     @Column(name = "updated_at")
+    @JsonIgnore
     private Instant updatedAt;
 }

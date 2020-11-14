@@ -22,7 +22,8 @@ class CustomerServiceTest {
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
     private final ImageServiceImpl imageService = mock(ImageServiceImpl.class);
     private final EmailService emailService = mock(EmailService.class);
-    private final CustomerService customerService = new CustomerService(customerRepository, imageService, emailService);
+    private final SpecialNeedTypeService specialNeedTypeService = mock(SpecialNeedTypeService.class);
+    private final CustomerService customerService = new CustomerService(customerRepository, imageService, emailService, specialNeedTypeService);
 
     @Test
     void Create_SuccessCustomer_Success() {
@@ -86,21 +87,22 @@ class CustomerServiceTest {
         return new Customer(
                 UUID.randomUUID(),
                 "photoUrl",
-                "Full name",
-                "08976537539",
-                "bio",
-                "957823402",
-                "923402148",
+                "fullName",
+                "personIdentifier",
+                "biooo",
+                "902020202",
+                "902020202",
                 CustomerType.CLIENT,
                 CustomerStatus.REGISTERED,
-                "email@gmail.com",
-                "fd4c2b1441c3319eaa14e1d63f64336e",
-                "123456",
+                "email",
+                new ArrayList<>(),
+                "password",
+                "forgetPasswordCode",
                 Instant.now(),
                 "address",
                 "city",
                 "state",
-                "04234098",
+                "zipCode",
                 Instant.now(),
                 Instant.now()
         );

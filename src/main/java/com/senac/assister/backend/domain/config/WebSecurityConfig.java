@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/v1/customer").permitAll()
                 .antMatchers("/api/v1/customer/**").authenticated()
                 .antMatchers("/api/v1/session/**").authenticated()
+                .antMatchers("/api/v1/special-need-type/**").hasAuthority("ADMIN")
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new RestAuthenticationEntryPoint())
                 .and()
