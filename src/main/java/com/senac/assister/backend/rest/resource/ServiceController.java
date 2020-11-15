@@ -6,6 +6,7 @@ import com.senac.assister.backend.domain.entity.Service;
 import com.senac.assister.backend.domain.enumeration.ServiceStatus;
 import com.senac.assister.backend.domain.service.RateService;
 import com.senac.assister.backend.domain.service.ServicesService;
+import com.senac.assister.backend.rest.dto.customer.CustomerSQtd;
 import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
 import com.senac.assister.backend.rest.dto.rate.CreateRateResponse;
 import com.senac.assister.backend.rest.dto.service.ServiceRequest;
@@ -80,12 +81,12 @@ public class ServiceController {
 
     @GetMapping("/assisters")
     @ApiOperation("List assisters in range date")
-    public ResponseEntity<List<Customer>> listAssisters(@RequestParam("dateI") String dateI,
+    public ResponseEntity<List<CustomerSQtd>> listAssisters(@RequestParam("dateI") String dateI,
             @RequestParam("dateF") String dateF) {
         Instant dateInitial = LocalDate.parse(dateI).atStartOfDay().toInstant(ZoneOffset.UTC);
         Instant dateFinal = LocalDate.parse(dateF).atStartOfDay().toInstant(ZoneOffset.UTC);
-        List<Customer> list = servicesService.findAllAssisterInRange(dateInitial,dateFinal);
-        return new ResponseEntity<List<Customer>>(list, HttpStatus.OK);
+        List<CustomerSQtd> list = servicesService.findAllAssisterInRange(dateInitial,dateFinal);
+        return new ResponseEntity<List<CustomerSQtd>>(list, HttpStatus.OK);
     }
 
     @PostMapping("/customer/accept/{id}")

@@ -20,7 +20,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
 
     @Query(value = "SELECT c FROM Customer c LEFT JOIN Service s ON s.assisterCustomer = c.id " +
-            "WHERE c.customerType = 'ASSISTER' AND " +
+            "WHERE c.customerType = 'ASSISTER' AND ( " +
             "( " +
                 "(s.startDate NOT BETWEEN :startDate AND :finalDate) " +
                 "AND " +
@@ -29,13 +29,14 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
             "OR " +
             "(s.serviceStatus = 'FINISHED' OR s.serviceStatus = 'CANCELED') " +
             "OR " +
-            "s.id IS NULL ")
+            "s.id IS NULL )")
     List<Customer> findAssistersInRange(
             @Param("startDate") Instant startDate,
             @Param("finalDate") Instant finalDate
     );
 
-    @Query("SELECT c.id, c.fullName, COUNT(c.id) as qtdService FROM Customer c LEFT JOIN Service s ON s.assisterCustomer = c.id " +
-            "GROUP BY c.id, c.fullName")
-    public List<Customer> listAlQtdServices();
+    @Query(value = "SELECT BIN_TO_UUID(c.id), COUNT(s.customer_assister_id) AS qtdService FROM customer c " +
+            "LEFT JOIN service s ON s.customer_assister_id = c.id " +
+            "GROUP BY s.customer_assister_id, c.id", nativeQuery = true)
+    public List<Object[]> listAlQtdServices();
 }
