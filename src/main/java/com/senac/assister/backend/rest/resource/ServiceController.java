@@ -9,9 +9,7 @@ import com.senac.assister.backend.domain.service.ServicesService;
 import com.senac.assister.backend.rest.dto.customer.CustomerSQtd;
 import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
 import com.senac.assister.backend.rest.dto.rate.CreateRateResponse;
-import com.senac.assister.backend.rest.dto.service.ServiceRequest;
-import com.senac.assister.backend.rest.dto.service.ServiceResponse;
-import com.senac.assister.backend.rest.dto.service.ServiceResponseAlterStatus;
+import com.senac.assister.backend.rest.dto.service.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.http.HttpStatus;
@@ -41,36 +39,22 @@ public class ServiceController {
         this.rateService = rateService;
     }
 
-    @PostMapping
-    @ApiOperation("Create service")
-    public ResponseEntity<ServiceResponse> createService(@Valid @RequestBody ServiceRequest serviceRequest) {
-        Service service = ServiceRequest.convertToEntity(serviceRequest);
+    @PostMapping("/quote")
+    @ApiOperation("Quote assister service. Service will attach to customer sent on authentication.")
+    public ResponseEntity<QuoteServiceResponse> createAndQuoteService(@RequestBody QuoteServiceRequest request) {
+        Service service = servicesService.quoteService(QuoteServiceRequest.convertToEntity(request));
 
-        service = servicesService.save(service);
+        QuoteServiceResponse response = QuoteServiceResponse.convertToDto(service);
 
-        ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
-
-        return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
-    }
-
-    @PutMapping
-    @ApiOperation("Update service")
-    public ResponseEntity<ServiceResponse> updateService(@Valid @RequestBody ServiceRequest serviceRequest){
-        Service service = ServiceRequest.convertToEntity(serviceRequest);
-
-        service = servicesService.update(service);
-
-        ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
-
-        return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
+        return new ResponseEntity<QuoteServiceResponse>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}/rate")
     @ApiOperation("Create rate in service")
-    public ResponseEntity<CreateRateResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest){
+    public ResponseEntity<CreateRateResponse> createRateInService(@PathVariable UUID id, @Valid @RequestBody CreateRateRequest rateRequest) {
         Service service = servicesService.findById(id);
 
-        Rate rate =  CreateRateRequest.convertToEntity(rateRequest);
+        Rate rate = CreateRateRequest.convertToEntity(rateRequest);
         rate = rateService.save(rate);
         service.setRate(rate);
 
@@ -82,10 +66,10 @@ public class ServiceController {
     @GetMapping("/assisters")
     @ApiOperation("List assisters in range date")
     public ResponseEntity<List<CustomerSQtd>> listAssisters(@RequestParam("dateI") String dateI,
-            @RequestParam("dateF") String dateF) {
+                                                            @RequestParam("dateF") String dateF) {
         Instant dateInitial = LocalDate.parse(dateI).atStartOfDay().toInstant(ZoneOffset.UTC);
         Instant dateFinal = LocalDate.parse(dateF).atStartOfDay().toInstant(ZoneOffset.UTC);
-        List<CustomerSQtd> list = servicesService.findAllAssisterInRange(dateInitial,dateFinal);
+        List<CustomerSQtd> list = servicesService.findAllAssisterInRange(dateInitial, dateFinal);
         return new ResponseEntity<List<CustomerSQtd>>(list, HttpStatus.OK);
     }
 
@@ -112,3 +96,28 @@ public class ServiceController {
         return new ResponseEntity<ServiceResponseAlterStatus>(service, HttpStatus.OK);
     }
 }
+
+
+//    @PostMapping
+//    @ApiOperation("Create service")
+//    public ResponseEntity<ServiceResponse> createService(@Valid @RequestBody ServiceRequest serviceRequest) {
+//        Service service = ServiceRequest.convertToEntity(serviceRequest);
+//
+//        service = servicesService.save(service);
+//
+//        ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
+//
+//        return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
+//    }
+//
+//    @PutMapping
+//    @ApiOperation("Update service")
+//    public ResponseEntity<ServiceResponse> updateService(@Valid @RequestBody ServiceRequest serviceRequest){
+//        Service service = ServiceRequest.convertToEntity(serviceRequest);
+//
+//        service = servicesService.update(service);
+//
+//        ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
+//
+//        return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
+//    }

@@ -1,6 +1,7 @@
 package com.senac.assister.backend.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.senac.assister.backend.domain.enumeration.SpecialNeedTypes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

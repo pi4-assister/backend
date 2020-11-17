@@ -7,6 +7,9 @@ package com.senac.assister.backend.domain.enumeration;
  */
 public enum  ServiceStatus {
     CANCELED,
+    QUOTED,
+    ASSISTER_ACCEPTED,
+    CUSTOMER_ACCEPTED,
     INITIATED,
     IN_PROGRESS,
     FINISHED

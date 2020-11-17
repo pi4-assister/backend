@@ -5,22 +5,21 @@ import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.entity.Service;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
 import com.senac.assister.backend.domain.enumeration.ServiceStatus;
+import com.senac.assister.backend.domain.exception.InvalidQuoteServiceException;
 import com.senac.assister.backend.domain.exception.ServiceNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.repository.ServiceRepository;
-import com.senac.assister.backend.rest.dto.customer.CreateCustomerRequest;
-import com.senac.assister.backend.rest.dto.customer.CustomerResponse;
+import com.senac.assister.backend.domain.security.MyUserDetails;
+import com.senac.assister.backend.domain.validation.QuoteServiceValidation;
 import com.senac.assister.backend.rest.dto.customer.CustomerSQtd;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
@@ -29,12 +28,15 @@ public class ServicesService implements CrudService<Service> {
     private final ServiceRepository repository;
     private final EmailService emailService;
     private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
+
     private final ModelMapper mapper = new ModelMapper();
 
-    public ServicesService(ServiceRepository repository, EmailService emailService, CustomerRepository customerRepository) {
+    public ServicesService(ServiceRepository repository, EmailService emailService, CustomerRepository customerRepository, CustomerService customerService) {
         this.repository = repository;
         this.emailService = emailService;
         this.customerRepository = customerRepository;
+        this.customerService = customerService;
     }
 
     @Override
@@ -64,6 +66,26 @@ public class ServicesService implements CrudService<Service> {
         return repository.findAll();
     }
 
+    public Service quoteService(Service service) {
+        Customer client = ((MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).loggedCustomer;
+
+        service.setClientCustomer(client);
+
+        service.setAssisterCustomer(customerService.findById(service.getAssisterCustomer().getId()));
+
+        List<String> errors = QuoteServiceValidation.isValid(service);
+
+        if (!errors.isEmpty()) {
+            throw new InvalidQuoteServiceException(errors);
+        }
+
+        service.setTotalPrice(PriceService.calculateServicePrice(service));
+
+        service.setServiceStatus(ServiceStatus.QUOTED);
+
+        return repository.save(service);
+    }
+
     public List<CustomerSQtd> findAllAssisterInRange(Instant dateI, Instant dateF) {
 
         Map<UUID, Long> mapQtdServices = customerRepository.listAlQtdServices()
@@ -74,7 +96,7 @@ public class ServicesService implements CrudService<Service> {
                             BigInteger bg = (BigInteger) obj[1];
                             return bg.longValue();
                         }
-                        ));
+                ));
 
 
         List<CustomerSQtd> listAssisters =
