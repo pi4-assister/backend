@@ -96,28 +96,3 @@ public class ServiceController {
         return new ResponseEntity<ServiceResponseAlterStatus>(service, HttpStatus.OK);
     }
 }
-
-
-//    @PostMapping
-//    @ApiOperation("Create service")
-//    public ResponseEntity<ServiceResponse> createService(@Valid @RequestBody ServiceRequest serviceRequest) {
-//        Service service = ServiceRequest.convertToEntity(serviceRequest);
-//
-//        service = servicesService.save(service);
-//
-//        ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
-//
-//        return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
-//    }
-//
-//    @PutMapping
-//    @ApiOperation("Update service")
-//    public ResponseEntity<ServiceResponse> updateService(@Valid @RequestBody ServiceRequest serviceRequest){
-//        Service service = ServiceRequest.convertToEntity(serviceRequest);
-//
-//        service = servicesService.update(service);
-//
-//        ServiceResponse serviceResponse = ServiceResponse.convertToResponse(service);
-//
-//        return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
-//    }

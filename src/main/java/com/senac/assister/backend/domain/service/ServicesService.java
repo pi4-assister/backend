@@ -83,6 +83,8 @@ public class ServicesService implements CrudService<Service> {
 
         service.setServiceStatus(ServiceStatus.QUOTED);
 
+        // Todo -> send e-mail to Assister and Customer
+
         return repository.save(service);
     }
 
