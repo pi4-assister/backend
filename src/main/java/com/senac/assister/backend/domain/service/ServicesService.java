@@ -39,33 +39,6 @@ public class ServicesService implements CrudService<Service> {
         this.customerService = customerService;
     }
 
-    @Override
-    public Service save(Service source) {
-        return repository.save(source);
-    }
-
-    @Override
-    public Service delete(UUID id) {
-        Service service = repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
-        service.setServiceStatus(ServiceStatus.CANCELED);
-        return repository.save(service);
-    }
-
-    @Override
-    public Service update(Service source) {
-        return repository.save(source);
-    }
-
-    @Override
-    public Service findById(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
-    }
-
-    @Override
-    public List<Service> findAll() {
-        return repository.findAll();
-    }
-
     public Service quoteService(Service service) {
         Customer client = ((MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).loggedCustomer;
 
@@ -83,7 +56,7 @@ public class ServicesService implements CrudService<Service> {
 
         service.setServiceStatus(ServiceStatus.QUOTED);
 
-        // Todo -> send e-mail to Assister and Customer
+        emailService.sendServiceHtmlEmail(service, EmailSubjects.QUOTE);
 
         return repository.save(service);
     }
@@ -124,13 +97,39 @@ public class ServicesService implements CrudService<Service> {
 
         Customer assister = service.getAssisterCustomer();
 
-        emailService.sendHtmlEmail(customer, EmailSubjects.SERVICE_IN_PROGRESS);
+        emailService.sendServiceHtmlEmail(service, EmailSubjects.SERVICE_IN_PROGRESS);
 
-        emailService.sendHtmlEmail(assister, EmailSubjects.SERVICE_IN_PROGRESS);
+        emailService.sendServiceHtmlEmail(service, EmailSubjects.SERVICE_IN_PROGRESS);
     }
 
     public CustomerSQtd convertToEntity(Customer customer) {
         return mapper.map(customer, CustomerSQtd.class);
     }
 
+    @Override
+    public Service save(Service source) {
+        return repository.save(source);
+    }
+
+    @Override
+    public Service delete(UUID id) {
+        Service service = repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
+        service.setServiceStatus(ServiceStatus.CANCELED);
+        return repository.save(service);
+    }
+
+    @Override
+    public Service update(Service source) {
+        return repository.save(source);
+    }
+
+    @Override
+    public Service findById(UUID id) {
+        return repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
+    }
+
+    @Override
+    public List<Service> findAll() {
+        return repository.findAll();
+    }
 }

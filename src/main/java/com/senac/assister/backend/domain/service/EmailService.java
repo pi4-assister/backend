@@ -61,8 +61,44 @@ public class EmailService {
                 return htmlContent.replace("#customer_name#", customer.getFullName());
             case FORGOT_PASSWORD:
                 return htmlContent.replace("#forgot_code#", customer.getForgetPasswordCode());
+            default:
+                return "";
+        }
+    }
+
+    @Async
+    public void sendServiceHtmlEmail(com.senac.assister.backend.domain.entity.Service service, EmailSubjects subjects) {
+        MimeMessage mail = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mail, "UTF-8");
+
+        String htmlFile = getHtmlFile(subjects);
+        String htmlContent = decodeHtml(htmlFile);
+
+        htmlContent = replaceServiceEmailFlags(service, htmlContent, subjects);
+
+        try {
+            helper.setFrom(ASSISTER_EMAIL, ASSISTER_NAME);
+            helper.setTo(service.getClientCustomer().getEmail());
+            helper.setSubject(subjects.toString());
+            helper.setText(htmlContent, true);
+
+            mailSender.send(mail);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
+    private String replaceServiceEmailFlags(com.senac.assister.backend.domain.entity.Service service, String htmlContent, EmailSubjects subjects) {
+        switch (subjects) {
+            case QUOTE:
+                return htmlContent
+                        .replace("#assister_name#", service.getAssisterCustomer().getFullName())
+                        .replace("#assister_photo_url#", service.getAssisterCustomer().getPhotoUrl())
+                        .replace("#price#", Double.toString(service.getTotalPrice()))
+                        .replace("#disabilities#", "Deficiências múltiplas e cuidado com idosos.");
             case SERVICE_IN_PROGRESS:
-                return htmlContent.replace("#customer_name#", customer.getPassword());
+                return htmlContent.replace("#customer_name#", service.getAssisterCustomer().getFullName());
             default:
                 return "";
         }
@@ -84,9 +120,12 @@ public class EmailService {
                 return path + "/hiring.html";
             case FORGOT_PASSWORD:
                 return path + "/forgot_password.html";
+            case QUOTE:
+                return path + "/quote.html";
             case SERVICE_IN_PROGRESS:
                 return path + "/service_in_progress.html";
+            default:
+                return "";
         }
-        return "";
     }
 }
