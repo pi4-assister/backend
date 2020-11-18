@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Component
 public class AssisterJobs {
-    @Scheduled(cron = "* */5 * * * *")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void invalidateServices() {
         System.out.println("Rodando teste no horário: " + Instant.now());
     }
