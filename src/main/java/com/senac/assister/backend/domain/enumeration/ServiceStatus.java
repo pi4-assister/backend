@@ -6,5 +6,11 @@ package com.senac.assister.backend.domain.enumeration;
  * ACCEPTED: if both clients accepted the quotation.
  */
 public enum  ServiceStatus {
-    CANCELED
+    CANCELED,
+    QUOTED,
+    ASSISTER_ACCEPTED,
+    CUSTOMER_ACCEPTED,
+    INITIATED,
+    IN_PROGRESS,
+    FINISHED
 }
