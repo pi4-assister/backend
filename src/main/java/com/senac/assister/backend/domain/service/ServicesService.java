@@ -17,9 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigInteger;
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
@@ -63,7 +61,9 @@ public class ServicesService implements CrudService<Service> {
 
     public List<CustomerSQtd> findAllAssisterInRange(Instant dateI, Instant dateF) {
 
-        Map<UUID, Long> mapQtdServices = customerRepository.listAlQtdServices()
+        Map<UUID, CustomerSQtd> mapAssisters = new HashMap<UUID, CustomerSQtd>();
+
+        Map<UUID, Long> mapAmountServices = customerRepository.findAllAmountServices()
                 .stream()
                 .collect(Collectors.toMap(
                         obj -> UUID.fromString((String) obj[0]),
@@ -73,14 +73,23 @@ public class ServicesService implements CrudService<Service> {
                         }
                 ));
 
-
         List<CustomerSQtd> listAssisters =
                 customerRepository.findAssistersInRange(dateI, dateF).stream()
                         .map(this::convertToEntity)
                         .collect(Collectors.toList());
 
-        listAssisters.stream().forEach(s -> s.setQtdServices(mapQtdServices.get(s.getId())));
+        listAssisters.stream().forEach(s -> s.setQtdServices(mapAmountServices.get(s.getId())));
 
+        listAssisters.forEach(s -> {
+            mapAssisters.put(s.getId(), s);
+        });
+
+        customerRepository.findAll().forEach(c -> {
+            CustomerSQtd assister = mapAssisters.get(c.getId());
+            if(assister != null) assister.setSpecialNeeds(c.getCustomerSpecialNeeds());
+        });
+        listAssisters = new ArrayList(mapAssisters.values());
+        listAssisters.sort(Comparator.comparingLong(CustomerSQtd::getQtdServices).reversed());
         return listAssisters;
     }
 
@@ -92,10 +101,6 @@ public class ServicesService implements CrudService<Service> {
 
     public void sendEmail(UUID id) {
         Service service = repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
-
-        Customer customer = service.getClientCustomer();
-
-        Customer assister = service.getAssisterCustomer();
 
         emailService.sendServiceHtmlEmail(service, EmailSubjects.SERVICE_IN_PROGRESS);
 
