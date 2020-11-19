@@ -93,6 +93,6 @@ public class ServiceController {
                                 servicesService.alterStatusService(id, ServiceStatus.IN_PROGRESS)
                         );
         servicesService.sendEmail(id);
-        return new ResponseEntity<ServiceResponseAlterStatus>(service, HttpStatus.OK);
+        return new ResponseEntity<>(service, HttpStatus.OK);
     }
 }

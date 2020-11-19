@@ -103,8 +103,6 @@ public class ServicesService implements CrudService<Service> {
         Service service = repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
 
         emailService.sendServiceHtmlEmail(service, EmailSubjects.SERVICE_IN_PROGRESS);
-
-        emailService.sendServiceHtmlEmail(service, EmailSubjects.SERVICE_IN_PROGRESS);
     }
 
     public CustomerSQtd convertToEntity(Customer customer) {
