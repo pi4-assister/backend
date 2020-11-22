@@ -23,7 +23,7 @@ public class AssisterJobs {
         listOfServices.forEach(servicesService::cancelService);
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/9 * * * ?")
     public void paidPendingServices() {
         List<Service> listOfServices = servicesService.getAllServicesByStatus(ServiceStatus.FINISHED);
         listOfServices.forEach(servicesService::payService);
