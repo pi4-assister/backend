@@ -32,7 +32,6 @@
 * [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
-* [Contributing](#contributing)
 * [About us](#about-us)
 * [Technologies used](#technologies-used)
 
@@ -67,19 +66,12 @@ Using [IntelliJ](https://www.jetbrains.com/idea/download/#section=linux) it will
 
 Then you will need to override the application.properties template.
 
+After all settings are done, use this command to run the application:
+```sh
+./gradlew bootRun
+```
+
 Voilà! :)
-
-
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
 
 ## About us
 
@@ -97,5 +89,8 @@ Authors:
 ## Technologies used
 
 * [GCP](https://cloud.google.com/)
+  * [STORAGE](https://cloud.google.com/storage)
+  * [MySQL](https://cloud.google.com)
 * [Heroku](https://heroku.com)
 * [MySQL](https://www.mysql.com/)
+* [CI/CD](https://circleci.com/)
