@@ -75,7 +75,6 @@ public class EmailService {
         String htmlContent = decodeHtml(htmlFile);
 
         htmlContent = replaceServiceEmailFlags(service, htmlContent, subjects);
-
         try {
             helper.setFrom(ASSISTER_EMAIL, ASSISTER_NAME);
             helper.setTo(service.getClientCustomer().getEmail());
@@ -97,8 +96,7 @@ public class EmailService {
                         .replace("#assister_photo_url#", service.getAssisterCustomer().getPhotoUrl())
                         .replace("#price#", Double.toString(service.getTotalPrice()))
                         .replace("#disabilities#", "Deficiências múltiplas e cuidado com idosos.");
-            case SERVICE_IN_PROGRESS:
-                return htmlContent.replace("#customer_name#", service.getAssisterCustomer().getFullName());
+            case SERVICE_IN_PROGRESS: return htmlContent;
             default:
                 return "";
         }

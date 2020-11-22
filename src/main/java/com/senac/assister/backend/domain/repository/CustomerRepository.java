@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
             "OR " +
             "(s.serviceStatus = 'FINISHED' OR s.serviceStatus = 'CANCELED') " +
             "OR " +
-            "s.id IS NULL )")
+            "s.id IS NULL ) ")
     List<Customer> findAssistersInRange(
             @Param("startDate") Instant startDate,
             @Param("finalDate") Instant finalDate
@@ -38,5 +39,6 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     @Query(value = "SELECT BIN_TO_UUID(c.id), COUNT(s.customer_assister_id) AS qtdService FROM customer c " +
             "LEFT JOIN service s ON s.customer_assister_id = c.id " +
             "GROUP BY s.customer_assister_id, c.id", nativeQuery = true)
-    public List<Object[]> listAlQtdServices();
+    public List<Object[]> findAllAmountServices();
+
 }
