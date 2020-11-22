@@ -18,7 +18,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -90,8 +92,17 @@ public class ServicesService implements CrudService<Service> {
     }
 
     public Service cancelService(Service service) {
-        service.setServiceStatus(ServiceStatus.CANCELED);
+        if (service.getServiceStatus() != ServiceStatus.IN_PROGRESS) {
 
+            Duration range = Duration.between(service.getUpdatedAt(), Instant.now().minusSeconds(86400 * 10)); // 10 days
+            long days = range.toDays();
+
+            if (days > 5) {
+                service.setServiceStatus(ServiceStatus.CANCELED);
+
+                return repository.save(service);
+            }
+        }
         return repository.save(service);
     }
 
@@ -129,7 +140,18 @@ public class ServicesService implements CrudService<Service> {
     }
 
     public List<Service> getAllPendingServices() {
-        return repository.findAllByServiceStatusIsNotAndServiceStatusIsNot(ServiceStatus.FINISHED, ServiceStatus.PAID);
+
+        List<Service> listOfAllServices = new ArrayList<>();
+
+        repository.findAll().forEach(service -> {
+            if (service.getServiceStatus() != ServiceStatus.CANCELED ||
+                    service.getServiceStatus() != ServiceStatus.FINISHED ||
+                    service.getServiceStatus() != ServiceStatus.PAID) {
+                listOfAllServices.add(service);
+            }
+        });
+
+        return listOfAllServices;
     }
 
     public void sendEmail(UUID id) {
