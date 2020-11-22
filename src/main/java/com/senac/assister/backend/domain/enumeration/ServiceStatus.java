@@ -12,5 +12,6 @@ public enum  ServiceStatus {
     CUSTOMER_ACCEPTED,
     INITIATED,
     IN_PROGRESS,
-    FINISHED
+    FINISHED,
+    PAID
 }
