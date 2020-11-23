@@ -71,6 +71,19 @@ public class ServiceController {
         return new ResponseEntity<List<CustomerSQtd>>(list, HttpStatus.OK);
     }
 
+    @PostMapping("/finish/{id}")
+    @ApiOperation("FinishService")
+    public ResponseEntity<ServiceResponse> createAndQuoteService(@PathVariable UUID id) {
+        Service request = new Service();
+        request.setId(id);
+
+        Service service = servicesService.finishService(request);
+
+        ServiceResponse response = ServiceResponse.convertToResponse(service);
+
+        return new ResponseEntity<ServiceResponse>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/customer/accept/{id}")
     @ApiOperation("Customer accept service")
     public ResponseEntity<ServiceResponseAlterStatus> customerAcceptService(@PathVariable UUID id) {

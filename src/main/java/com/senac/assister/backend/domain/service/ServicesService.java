@@ -1,6 +1,7 @@
 package com.senac.assister.backend.domain.service;
 
 
+import com.senac.assister.backend.domain.entity.Charge;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.entity.Service;
 import com.senac.assister.backend.domain.enumeration.EmailSubjects;
@@ -10,14 +11,20 @@ import com.senac.assister.backend.domain.exception.ServiceNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.repository.ServiceRepository;
 import com.senac.assister.backend.domain.security.MyUserDetails;
+import com.senac.assister.backend.domain.validation.FinishServiceValidation;
 import com.senac.assister.backend.domain.validation.QuoteServiceValidation;
 import com.senac.assister.backend.rest.dto.customer.CustomerSQtd;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.math.BigInteger;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Service
@@ -27,14 +34,16 @@ public class ServicesService implements CrudService<Service> {
     private final EmailService emailService;
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
+    private final ChargeService chargeService;
 
     private final ModelMapper mapper = new ModelMapper();
 
-    public ServicesService(ServiceRepository repository, EmailService emailService, CustomerRepository customerRepository, CustomerService customerService) {
+    public ServicesService(ServiceRepository repository, EmailService emailService, CustomerRepository customerRepository, CustomerService customerService, ChargeService chargeService) {
         this.repository = repository;
         this.emailService = emailService;
         this.customerRepository = customerRepository;
         this.customerService = customerService;
+        this.chargeService = chargeService;
     }
 
     public Service quoteService(Service service) {
@@ -56,6 +65,45 @@ public class ServicesService implements CrudService<Service> {
 
         emailService.sendServiceHtmlEmail(service, EmailSubjects.QUOTE);
 
+        return repository.save(service);
+    }
+
+    public Service finishService(Service request) {
+        Service service = findById(request.getId());
+
+        List<String> errors = FinishServiceValidation.isValid(service);
+
+        if (!errors.isEmpty()) {
+            throw new InvalidQuoteServiceException(errors);
+        }
+
+        service.setServiceStatus(ServiceStatus.FINISHED);
+
+        return repository.save(service);
+    }
+
+    public Service payService(Service service) {
+        Charge charge = chargeService.chargeService(service);
+
+        service.setCharge(charge);
+
+        service.setServiceStatus(ServiceStatus.PAID);
+
+        return repository.save(service);
+    }
+
+    public Service cancelService(Service service) {
+        if (service.getServiceStatus() != ServiceStatus.IN_PROGRESS) {
+
+            Duration range = Duration.between(service.getUpdatedAt(), Instant.now().minusSeconds(86400 * 10)); // 10 days
+            long days = range.toDays();
+
+            if (days > 5) {
+                service.setServiceStatus(ServiceStatus.CANCELED);
+
+                return repository.save(service);
+            }
+        }
         return repository.save(service);
     }
 
@@ -97,6 +145,25 @@ public class ServicesService implements CrudService<Service> {
         Service service = repository.findById(id).orElseThrow(() -> new ServiceNotFoundException(id));
         service.setServiceStatus(status);
         return repository.save(service);
+    }
+
+    public List<Service> getAllServicesByStatus(ServiceStatus status) {
+        return repository.findAllByServiceStatus(status);
+    }
+
+    public List<Service> getAllPendingServices() {
+
+        List<Service> listOfAllServices = new ArrayList<>();
+
+        repository.findAll().forEach(service -> {
+            if (service.getServiceStatus() != ServiceStatus.CANCELED ||
+                    service.getServiceStatus() != ServiceStatus.FINISHED ||
+                    service.getServiceStatus() != ServiceStatus.PAID) {
+                listOfAllServices.add(service);
+            }
+        });
+
+        return listOfAllServices;
     }
 
     public void sendEmail(UUID id) {
