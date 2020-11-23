@@ -65,11 +65,9 @@ public class ServiceController {
 
     @GetMapping("/assisters")
     @ApiOperation("List assisters in range date")
-    public ResponseEntity<List<CustomerSQtd>> listAssisters(@RequestParam("dateI") String dateI,
-                                                            @RequestParam("dateF") String dateF) {
-        Instant dateInitial = LocalDate.parse(dateI).atStartOfDay().toInstant(ZoneOffset.UTC);
-        Instant dateFinal = LocalDate.parse(dateF).atStartOfDay().toInstant(ZoneOffset.UTC);
-        List<CustomerSQtd> list = servicesService.findAllAssisterInRange(dateInitial, dateFinal);
+    public ResponseEntity<List<CustomerSQtd>> listAssisters(@RequestParam("dateI") Instant dateI,
+                                                            @RequestParam("dateF") Instant dateF) {
+        List<CustomerSQtd> list = servicesService.findAllAssisterInRange(dateI, dateF);
         return new ResponseEntity<List<CustomerSQtd>>(list, HttpStatus.OK);
     }
 
