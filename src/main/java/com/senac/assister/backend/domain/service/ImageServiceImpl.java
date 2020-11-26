@@ -37,11 +37,11 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String upload(MultipartFile file, Customer customer) {
-        validateImageExtension(file.getOriginalFilename());
+        String imageExtension = validateImageExtension(file.getOriginalFilename());
 
         validateCredentials();
 
-        String generatedImageName = Hash.convertToMd5(customer.getPersonIdentifier() + customer.getCreatedAt());
+        String generatedImageName = Hash.convertToMd5(customer.getPersonIdentifier() + customer.getCreatedAt()) + imageExtension;
 
         File convertedFile = convertMultiPartToFile(file);
 
@@ -72,10 +72,11 @@ public class ImageServiceImpl implements ImageService {
         return convertedFile;
     }
 
-    private void validateImageExtension(String fileName) {
+    private String validateImageExtension(String fileName) {
         if (!fileName.matches("([^\\s]+(\\.(?i)(jpe?g|png))$)")) {
             throw new InvalidImageExtensionException(fileName);
         }
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 
     private void validateCredentials() {
