@@ -39,6 +39,6 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
     @Query(value = "SELECT BIN_TO_UUID(c.id), COUNT(s.customer_assister_id) AS qtdService FROM customer c " +
             "LEFT JOIN service s ON s.customer_assister_id = c.id " +
             "GROUP BY s.customer_assister_id, c.id", nativeQuery = true)
-    public List<Object[]> findAllAmountServices();
+    List<Object[]> findAllAmountServices();
 
 }
