@@ -124,11 +124,11 @@ public class ServicesService implements CrudService<Service> {
                         }
                 ));
 
-        Map<UUID, Double> mapRateNotes = rateRepository.findAllRateNotes()
+        Map<UUID, Integer> mapRateNotes = rateRepository.findAllRateNotes()
                 .stream()
                 .collect(Collectors.toMap(
                         obj -> UUID.fromString((String) obj[0]),
-                        obj -> (Double) obj[1]
+                        obj -> ((BigInteger) obj[1]).intValue()
                 ));
 
         List<CustomerSQtd> listAssisters =
@@ -139,7 +139,7 @@ public class ServicesService implements CrudService<Service> {
         listAssisters.stream().forEach(s -> s.setQtdServices(mapAmountServices.get(s.getId())));
 
         listAssisters.stream().forEach(s -> {
-            if(mapRateNotes.get(s.getId()) != null) s.setNote(mapRateNotes.get(s.getId()));
+            if(mapRateNotes.get(s.getId()) != null) s.setRate(mapRateNotes.get(s.getId()));
         });
 
         listAssisters.forEach(s -> {

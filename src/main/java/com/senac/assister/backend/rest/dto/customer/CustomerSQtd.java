@@ -55,7 +55,7 @@ public class CustomerSQtd {
 
     private Instant updatedAt;
 
-    private Double note = 0.0;
+    private Integer rate = 0;
 
 
 }
