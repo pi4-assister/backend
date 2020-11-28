@@ -9,6 +9,7 @@ import com.senac.assister.backend.domain.enumeration.ServiceStatus;
 import com.senac.assister.backend.domain.exception.InvalidQuoteServiceException;
 import com.senac.assister.backend.domain.exception.ServiceNotFoundException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
+import com.senac.assister.backend.domain.repository.RateRepository;
 import com.senac.assister.backend.domain.repository.ServiceRepository;
 import com.senac.assister.backend.domain.security.MyUserDetails;
 import com.senac.assister.backend.domain.validation.FinishServiceValidation;
@@ -35,15 +36,17 @@ public class ServicesService implements CrudService<Service> {
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
     private final ChargeService chargeService;
+    private final RateRepository rateRepository;
 
     private final ModelMapper mapper = new ModelMapper();
 
-    public ServicesService(ServiceRepository repository, EmailService emailService, CustomerRepository customerRepository, CustomerService customerService, ChargeService chargeService) {
+    public ServicesService(ServiceRepository repository, EmailService emailService, CustomerRepository customerRepository, CustomerService customerService, ChargeService chargeService, RateRepository rateRepository) {
         this.repository = repository;
         this.emailService = emailService;
         this.customerRepository = customerRepository;
         this.customerService = customerService;
         this.chargeService = chargeService;
+        this.rateRepository = rateRepository;
     }
 
     public Service quoteService(Service service) {
@@ -121,12 +124,23 @@ public class ServicesService implements CrudService<Service> {
                         }
                 ));
 
+        Map<UUID, Integer> mapRateNotes = rateRepository.findAllRateNotes()
+                .stream()
+                .collect(Collectors.toMap(
+                        obj -> UUID.fromString((String) obj[0]),
+                        obj -> ((BigInteger) obj[1]).intValue()
+                ));
+
         List<CustomerSQtd> listAssisters =
                 customerRepository.findAssistersInRange(dateI, dateF).stream()
                         .map(this::convertToEntity)
                         .collect(Collectors.toList());
 
         listAssisters.stream().forEach(s -> s.setQtdServices(mapAmountServices.get(s.getId())));
+
+        listAssisters.stream().forEach(s -> {
+            if(mapRateNotes.get(s.getId()) != null) s.setRate(mapRateNotes.get(s.getId()));
+        });
 
         listAssisters.forEach(s -> {
             mapAssisters.put(s.getId(), s);
@@ -136,8 +150,12 @@ public class ServicesService implements CrudService<Service> {
             CustomerSQtd assister = mapAssisters.get(c.getId());
             if(assister != null) assister.setSpecialNeeds(c.getCustomerSpecialNeeds());
         });
+
+
+
         listAssisters = new ArrayList(mapAssisters.values());
         listAssisters.sort(Comparator.comparingLong(CustomerSQtd::getQtdServices).reversed());
+
         return listAssisters;
     }
 
