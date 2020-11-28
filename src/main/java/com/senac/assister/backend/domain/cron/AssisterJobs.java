@@ -22,7 +22,7 @@ public class AssisterJobs {
     public void invalidateServices() {
         List<Service> listOfServices = servicesService.getAllPendingServices();
         listOfServices.forEach(servicesService::cancelService);
-        System.out.println(listOfServices.size() + " Services was invalidate in " + Instant.now());
+        System.out.println(listOfServices.size() + " Services checked to invalidate in " + Instant.now());
     }
 
     @Scheduled(cron = "0 0/9 * * * ?")

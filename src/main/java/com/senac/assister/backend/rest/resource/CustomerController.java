@@ -1,12 +1,17 @@
 package com.senac.assister.backend.rest.resource;
 
+import com.senac.assister.backend.domain.entity.Charge;
 import com.senac.assister.backend.domain.entity.CreditCard;
 import com.senac.assister.backend.domain.entity.Customer;
+import com.senac.assister.backend.domain.enumeration.ServiceStatus;
 import com.senac.assister.backend.domain.service.CreditCardService;
 import com.senac.assister.backend.domain.service.CustomerService;
+import com.senac.assister.backend.domain.service.ServicesService;
 import com.senac.assister.backend.domain.service.SpecialNeedTypeService;
+import com.senac.assister.backend.rest.dto.charge.ChargeResponse;
 import com.senac.assister.backend.rest.dto.credit_card.CreditCardResponse;
 import com.senac.assister.backend.rest.dto.customer.*;
+import com.senac.assister.backend.rest.dto.service.ServiceResponse;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -27,10 +32,12 @@ public class CustomerController {
 
     private final CustomerService customerService;
     private final CreditCardService creditCardService;
+    private final ServicesService servicesService;
 
-    public CustomerController(CustomerService customerService, CreditCardService creditCardService) {
+    public CustomerController(CustomerService customerService, CreditCardService creditCardService, ServicesService servicesService) {
         this.customerService = customerService;
         this.creditCardService = creditCardService;
+        this.servicesService = servicesService;
     }
 
     @ApiOperation("List all customers.")
@@ -132,5 +139,31 @@ public class CustomerController {
         customerService.changePassword(id, request.getPassword(), request.getCode());
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ApiOperation("Find all payments by client")
+    @GetMapping("/{id}/payments")
+    public ResponseEntity<List<ChargeResponse>> getAllPaymentsByClient(@PathVariable UUID id) {
+        Customer request = new Customer();
+        request.setId(id);
+
+        List<ChargeResponse> response = servicesService.getAllChargesByCustomer(request)
+                .stream()
+                .map(ChargeResponse::convertToDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<> (response, HttpStatus.OK);
+    }
+
+    @ApiOperation("Find all services by client and status")
+    @GetMapping("/{id}/services")
+    public ResponseEntity<List<ServiceResponse>> getAllServicesByClientAndStatus(@PathVariable UUID id, @RequestParam("status") ServiceStatus serviceStatus) {
+        Customer customer = new Customer();
+        customer.setId(id);
+
+        List<ServiceResponse> response = servicesService.getAllCustomerServicesByStatus(customer, serviceStatus)
+                .stream().map(ServiceResponse::convertToResponse).collect(Collectors.toList());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -11,16 +11,19 @@ public class ChargeService {
 
     private final ChargeRepository chargeRepository;
     private final PaymentServiceImpl paymentService;
+    private final CreditCardService creditCardService;
 
-    public ChargeService(ChargeRepository chargeRepository, PaymentServiceImpl paymentService) {
+    public ChargeService(ChargeRepository chargeRepository, PaymentServiceImpl paymentService, CreditCardService creditCardService) {
         this.chargeRepository = chargeRepository;
         this.paymentService = paymentService;
+        this.creditCardService = creditCardService;
     }
 
     public Charge chargeService(Service service) {
         Charge charge = new Charge();
 
         charge.setAmount(service.getTotalPrice());
+        charge.setCreditCard(creditCardService.findActiveCreditCard(service.getClientCustomer().getId()));
         charge.setService(service);
 
         paymentService.authorize(charge);

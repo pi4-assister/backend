@@ -72,8 +72,8 @@ public class ServiceController {
     }
 
     @PostMapping("/finish/{id}")
-    @ApiOperation("FinishService")
-    public ResponseEntity<ServiceResponse> createAndQuoteService(@PathVariable UUID id) {
+    @ApiOperation("Finish Service")
+    public ResponseEntity<ServiceResponse> finishService(@PathVariable UUID id) {
         Service request = new Service();
         request.setId(id);
 

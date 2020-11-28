@@ -1,29 +1,28 @@
 package com.senac.assister.backend.rest.dto.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.senac.assister.backend.domain.entity.Charge;
 import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.entity.Rate;
 import com.senac.assister.backend.domain.entity.Service;
 import com.senac.assister.backend.domain.enumeration.ServiceStatus;
-import com.senac.assister.backend.rest.dto.rate.CreateRateRequest;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-import javax.persistence.*;
 import java.time.Instant;
-import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class ServiceResponse {
 
     private static ModelMapper mapper = new ModelMapper();
 
     private String id;
-
-    private Customer assisterCustomer;
-
-    private Customer clientCustomer;
 
     private Instant startDate;
 
@@ -33,6 +32,7 @@ public class ServiceResponse {
 
     private double totalPrice;
 
+    @JsonIgnore
     private Charge charge;
 
     private Rate rate;

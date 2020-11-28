@@ -139,7 +139,7 @@ public class ServicesService implements CrudService<Service> {
         listAssisters.stream().forEach(s -> s.setQtdServices(mapAmountServices.get(s.getId())));
 
         listAssisters.stream().forEach(s -> {
-            if(mapRateNotes.get(s.getId()) != null) s.setRate(mapRateNotes.get(s.getId()));
+            if (mapRateNotes.get(s.getId()) != null) s.setRate(mapRateNotes.get(s.getId()));
         });
 
         listAssisters.forEach(s -> {
@@ -148,9 +148,8 @@ public class ServicesService implements CrudService<Service> {
 
         customerRepository.findAll().forEach(c -> {
             CustomerSQtd assister = mapAssisters.get(c.getId());
-            if(assister != null) assister.setSpecialNeeds(c.getCustomerSpecialNeeds());
+            if (assister != null) assister.setSpecialNeeds(c.getCustomerSpecialNeeds());
         });
-
 
 
         listAssisters = new ArrayList(mapAssisters.values());
@@ -169,6 +168,26 @@ public class ServicesService implements CrudService<Service> {
         return repository.findAllByServiceStatus(status);
     }
 
+    public List<Charge> getAllChargesByCustomer(Customer customer) {
+        List<Charge> listOfCharges = new ArrayList<>();
+
+        List<Service> listOfServices = getAllCustomerServicesByStatus(customer, ServiceStatus.PAID);
+
+        listOfServices.forEach(service -> {
+            listOfCharges.add(service.getCharge());
+        });
+
+        return listOfCharges;
+    }
+
+    public List<Service> getAllPaidServicesByCustomer(Customer customer) {
+        return getAllCustomerServicesByStatus(customer, ServiceStatus.PAID);
+    }
+
+    public List<Service> getAllCustomerServicesByStatus(Customer customer, ServiceStatus status) {
+        return repository.findAllByClientCustomerIdAndServiceStatus(customer.getId(), status);
+    }
+
     public List<Service> getAllPendingServices() {
 
         List<Service> listOfAllServices = new ArrayList<>();
@@ -176,7 +195,8 @@ public class ServicesService implements CrudService<Service> {
         repository.findAll().forEach(service -> {
             if (service.getServiceStatus() != ServiceStatus.CANCELED ||
                     service.getServiceStatus() != ServiceStatus.FINISHED ||
-                    service.getServiceStatus() != ServiceStatus.PAID) {
+                    service.getServiceStatus() != ServiceStatus.PAID ||
+                    service.getServiceStatus() != ServiceStatus.IN_PROGRESS) {
                 listOfAllServices.add(service);
             }
         });
