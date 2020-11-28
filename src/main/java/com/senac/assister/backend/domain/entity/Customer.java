@@ -22,6 +22,9 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@org.hibernate.annotations.Entity(
+        dynamicUpdate = true
+)
 public class Customer {
 
     public Customer(String photoUrl, String fullName, String personIdentifier, String bio, String phoneNumber, String emergencyNumber, CustomerType customerType, CustomerStatus status, String email, List<CustomerSpecialNeeds> customerSpecialNeeds, String password, String forgetPasswordCode, Instant birthdate, String address, String city, String state, String zipCode, Instant createdAt, Instant updatedAt) {

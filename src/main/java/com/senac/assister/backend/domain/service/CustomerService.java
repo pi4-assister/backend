@@ -11,14 +11,15 @@ import com.senac.assister.backend.domain.exception.WrongPasswordCodeException;
 import com.senac.assister.backend.domain.repository.CustomerRepository;
 import com.senac.assister.backend.domain.security.AssisterPasswordEncoder;
 import com.senac.assister.backend.domain.security.Hash;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CustomerService implements CrudService<Customer> {
@@ -74,6 +75,8 @@ public class CustomerService implements CrudService<Customer> {
     @Override
     public Customer update(Customer customer) {
         Customer customerFound = findById(customer.getId());
+
+        copyNonNullProperties(customer, customerFound);
 
         return repository.save(customer);
     }
@@ -132,5 +135,22 @@ public class CustomerService implements CrudService<Customer> {
 
     private String encryptPassword(String password) {
         return encoder.encode(password);
+    }
+
+    private static String[] getNullPropertyNames (Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<String>();
+        for(java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
+    }
+
+    private static void copyNonNullProperties(Object src, Object target) {
+        BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
     }
 }
