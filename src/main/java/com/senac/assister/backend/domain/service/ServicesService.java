@@ -185,7 +185,7 @@ public class ServicesService implements CrudService<Service> {
     }
 
     public List<Service> getAllCustomerServicesByStatus(Customer customer, ServiceStatus status) {
-        return repository.findAllByClientCustomerIdAndServiceStatus(customer.getId(), status);
+        return repository.findAllByClientCustomerIdOrAssisterCustomerIdAndServiceStatus(customer.getId(), customer.getId(), status);
     }
 
     public List<Service> getAllPendingServices() {
