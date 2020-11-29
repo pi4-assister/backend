@@ -15,4 +15,6 @@ public interface ServiceRepository extends JpaRepository<Service, UUID> {
     List<Service> findAllByServiceStatus(ServiceStatus status);
 
     List<Service> findAllByClientCustomerIdOrAssisterCustomerIdAndServiceStatus(UUID clientCustomerId, UUID assisterCustomerId, ServiceStatus status);
+
+    List<Service> findAllByClientCustomerIdOrAssisterCustomerId(UUID clientCustomerId, UUID assisterCustomerId);
 }

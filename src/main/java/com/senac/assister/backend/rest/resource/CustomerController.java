@@ -157,11 +157,11 @@ public class CustomerController {
 
     @ApiOperation("Find all services by client and status")
     @GetMapping("/{id}/services")
-    public ResponseEntity<List<ServiceResponse>> getAllServicesByClientAndStatus(@PathVariable UUID id, @RequestParam("status") ServiceStatus serviceStatus) {
+    public ResponseEntity<List<ServiceResponse>> getAllServicesByClientAndStatus(@PathVariable UUID id, @RequestParam(required = false) ServiceStatus status) {
         Customer customer = new Customer();
         customer.setId(id);
 
-        List<ServiceResponse> response = servicesService.getAllCustomerServicesByStatus(customer, serviceStatus)
+        List<ServiceResponse> response = servicesService.getAllCustomerServicesByStatus(customer, status)
                 .stream().map(ServiceResponse::convertToResponse).collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
