@@ -92,7 +92,7 @@ public class CustomerController {
     public ResponseEntity<CustomerResponse> show(@PathVariable UUID id) {
         CustomerResponse response = CustomerResponse.convertToDto(customerService.show(id));
 
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ApiOperation("List all credit cards by customer id.")

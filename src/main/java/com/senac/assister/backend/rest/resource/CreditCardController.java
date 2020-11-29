@@ -52,6 +52,6 @@ public class CreditCardController {
 
         CreditCardResponse response = CreditCardResponse.convertToDto(card);
 
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
