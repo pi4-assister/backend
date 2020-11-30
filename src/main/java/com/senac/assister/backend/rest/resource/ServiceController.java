@@ -106,4 +106,10 @@ public class ServiceController {
         servicesService.sendEmail(id);
         return new ResponseEntity<>(service, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation("Get service per id")
+    public ResponseEntity<Service> getService(@PathVariable UUID id) {
+        return new ResponseEntity<Service>(servicesService.findById(id), HttpStatus.OK);
+    }
 }
