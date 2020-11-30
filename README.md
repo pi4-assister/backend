@@ -1,7 +1,6 @@
 ![Build](https://img.shields.io/circleci/build/github/pi4-assister/backend/develop?token=e793b2585608568bd63bfff7a5ddcbac3118c38c)
 ![Java version](https://img.shields.io/badge/java-8-blue)
 ![Spring Version](https://img.shields.io/badge/Spring%20Boot-v2.3.3.RELEASE-brightgreen)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/pi4-assister/backend)
 ![GitHub contributors](https://img.shields.io/github/contributors/pi4-assister/backend)
 ![GitHub last commit](https://img.shields.io/github/last-commit/pi4-assister/backend)
 
