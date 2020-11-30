@@ -6,6 +6,7 @@ import com.senac.assister.backend.domain.entity.Customer;
 import com.senac.assister.backend.domain.entity.Rate;
 import com.senac.assister.backend.domain.entity.Service;
 import com.senac.assister.backend.domain.enumeration.ServiceStatus;
+import com.senac.assister.backend.rest.dto.customer.CustomerResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,9 @@ public class ServiceResponse {
 
     private String id;
 
-    private Customer assisterCustomer;
+    private CustomerResponse assisterCustomer;
 
-    private Customer clientCustomer;
+    private CustomerResponse clientCustomer;
 
     private Instant startDate;
 
