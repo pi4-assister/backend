@@ -109,7 +109,9 @@ public class ServiceController {
 
     @GetMapping("/{id}")
     @ApiOperation("Get service per id")
-    public ResponseEntity<Service> getService(@PathVariable UUID id) {
-        return new ResponseEntity<Service>(servicesService.findById(id), HttpStatus.OK);
+    public ResponseEntity<ServiceResponse> getService(@PathVariable UUID id) {
+        ServiceResponse response = ServiceResponse.convertToResponse(servicesService.findById(id));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
