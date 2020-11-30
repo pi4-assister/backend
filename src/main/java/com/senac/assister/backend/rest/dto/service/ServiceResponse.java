@@ -24,6 +24,10 @@ public class ServiceResponse {
 
     private String id;
 
+    private Customer assisterCustomer;
+
+    private Customer clientCustomer;
+
     private Instant startDate;
 
     private Instant finalDate;
