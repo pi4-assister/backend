@@ -33,7 +33,7 @@ public class PriceService {
 
         totalPrice += getPricePerDay(service.getStartDate(), service.getFinalDate());
 
-        return totalPrice;
+        return Math.round(totalPrice * 100.0) / 100.0;
     }
 
     private static double getDisabilityPrice(SpecialNeedType specialNeedType) {
